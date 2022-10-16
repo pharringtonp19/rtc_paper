@@ -4,9 +4,20 @@
 \usepackage{pdfsync} \usepackage{xr}
 \usepackage[ruled]{algorithm2e}
 \usepackage{tikz}
-\usepackage{subfig}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{authblk} % NEW!!!
 \bibliographystyle{econometrica}
+\usepackage{hyperref}       % hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=purple,
+    pdftitle={RFP},
+    pdfpagemode=FullScreen,
+    }
+
 
 
 \newtheorem{theorem}{Theorem}[section] \newtheorem{proposition}{Proposition}[section] \newtheorem{lemma}{Lemma}[section]
@@ -76,6 +87,24 @@ Under the potential outcome framework, clustered level treatment assignment can 
     \item The distribution of outcomes conditional on covariates may differ across clusters
 \end{enumerate}
 
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/f}
+    \caption{All zip codes}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False.pdf}
+    \caption{High Eviction Zip Codes}
+    \label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\label{FIGURE LABEL}
+\end{figure}
+
 The above issues are perhaps only magnified as we increase the dimensionality of the data
 
 \section{Right to Counsel}
@@ -107,6 +136,24 @@ The following notation defines the key variables used in the estimators defined 
 We fit the following difference-in-difference estimator. 
 \begin{align*}
     \beta_0 &= \mathbb{E}[Y_1 -Y_0 \mid D=1] -  \mathbb{E}[Y_1 - Y_0 \mid D=0] \end{align*}
+    
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False.pdf}
+    \caption{All zip codes}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False.pdf}
+    \caption{High Eviction Zip Codes}
+    \label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\label{FIGURE LABEL}
+\end{figure}
 
 \subsection{Difference-in-Difference with Controls}
 We then add individual level and zip code controls to the regression specification
@@ -135,6 +182,7 @@ A drawback of the above approach is that it makes no correction for the propensi
 \begin{align*}
     \beta _0 = \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
 \end{align*}
+
 \section{Related Literature}
  While this paper certainly engages with various literatures, from statistical discrimination, to applied deep learning, its central aim is to provide additional insight into the effectiveness of the Right to Counsel. \par 
  In line with the recent Economic works on the topic, it does so by offering a partial assessment of the policy ``at scale''. This approach differs significantly from some of the prior randomized control trial studies where only a limited number of judges were involved as in \cite{greiner2012limits} or where only individuals who were thought to likely benefit from legal representation were provided with laywers from private firms working pro bono as in \cite{seron2001impact}.   
