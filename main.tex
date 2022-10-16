@@ -144,7 +144,39 @@ Lastly, while no pre-analysis plan accompanies this paper, the only source of he
 \subsection{Timeline}
 In June of 2021, Governor Lamont of Connecticut signed into law the Right to Counsel (3). As highlighted in the timeline below, this event coincides with the end of the local moratorium on evictions (4) in Connecticut. Six months later, on January 31, 2022, as Covid-19 relief was winding down, the Right to Counsel went into effect. A detailed description of the timeline is provided in the appendix, but key dates of interest, including the start and end of local and national moratoriums, are illustrated below. 
 \par 
-\input{rtg/context/timeline}
+\begin{figure}[htbp]
+\centering
+    \centering
+    \includegraphics[width=.60\linewidth]{figures/rtc/context/timeline.png}
+    %\caption{All zip codes}
+    \label{SUBFIGURE LABEL 3}
+\end{figure}
+
+\subsection{Implementation}
+Because the expected demand for legal services under the Right to Counsel exceed the current level of legal support, state representatives decided to implement the policy in phases.\footnote{During the two years leading up to the pandemic, Connecticut saw 20,000 eviction fillings on average\footnote{\href{https://youtu.be/sLpi4xlVGgU?t=1002}{link}}} In the first stage, the policy was made available to a subset of the zip codes (the 14 shown in yellow) which correspond to $30\%$ of evictions and $20\%$ percent of the renter population.\footnote{CBF Assignment Sheet-- received via email on August 26th --Expected to assist 2,000 households in the first phase, in a state where 20,000 residents faced eviction} Individuals and families within these zip codes who made $80\%$ or less than the area median income were eligible for legal support starting on January 31, 2022.\footnote{(\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{"Income-eligible"} means (A) having household income at or below
+eighty per cent of the state median income adjusted for family size, as
+determined by the United States Department of Housing and Urban
+Development, at the time of the request for representation; or (B)
+receiving one of the following types of public assistance: (i) Temporary
+Assistance for Needy Families, (ii) Supplemental Nutrition Assistance
+Program benefits, (iii) Medicaid, (iv) Supplemental Security Income, (v)
+refugee resettlement benefits, (vi) rental assistance under chapter 138a
+of the general statutes, or (vii) the federal Housing Choice Voucher
+Program, 42 USC 1437f(o); } Beginning earlier, on October 1, 2021, landlords were to notify individuals of the existence of this policy when serving tenants with a notice to quit (the first step in an eviction proceeding -- the entire process is described in more detail in the appendix). In addition to landlords, courts were expected to inform tenants of the policy when and if tenants appeared in court.\footnote{\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{``On} and after October 1, 2021, an owner, lessor, landlord, legal
+representative or agent of an owner, lessor or landlord, a housing
+authority or a housing subsidy program administrator, as applicable,
+shall attach a copy of the notice described under subdivision (1) of this
+subsection, to (A) a notice to quit delivered to a covered individual
+pursuant to chapter 832 or chapter 412 of the general statutes; (B) a
+summons and complaint for a summary process action pursuant to
+chapter 832 or chapter 412 of the general statutes; (C) a lease termination
+notice for a public or subsidized housing unit; and (D) a notice to
+terminate a state or federal housing subsidy''}\footnote{\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{``An}y court notice scheduling a mediation or hearing that is sent to
+a self-represented party in a covered matter shall include plain language
+information about the availability of legal representation through the
+right to counsel program and a phone number for accessing information
+and applying for assistance.''} Given that the lack of enforcement with respect to landlords and that $37\%$ of Connecticut tenants fail to appear in court during eviction proceedings, it's quite possible that many eligible tenants are not yet aware of the policy's existence.\footnote{According to \href{https://www.ctpublic.org/news/2022-01-30/some-residents-facing-eviction-could-now-be-eligible-for-free-legal-aid}{article} $37\%$ of Connecticut tenants fail to appear in court during eviction proceedings, and their cases end in default, according to a 2021 report by the Connecticut Advisory Council on Housing Matters.}
+
 
 \section{Empirical Strategy}
 In contrast to many applied microeconomic papers that assess the sensitivity of their results by varying the selection of the controls in their regression models, we follow the framework presented in our accompanying paper \href{https://github.com/pharringtonp19/rfp_paper/blob/main/Regularizing_the_Forward_Pass.pdf}{Regularizing the Forward Pass} which keeps the set of controls fixed and explores how the estimate varies as we expand the function space that we search over.\footnote{If you are familiar with our ongoing work, you will notice that we have not yet applied the full model in this paper. We plan to do so in the next iteration of the paper.}\par 
