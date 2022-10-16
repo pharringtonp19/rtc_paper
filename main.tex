@@ -86,26 +86,28 @@ Under the potential outcome framework, clustered level treatment assignment can 
     \item The distribution of covariates can differ across clusters
     \item The distribution of outcomes conditional on covariates may differ across clusters
 \end{enumerate}
-
+The above issues are perhaps only magnified as we increase the dimensionality of the data. 
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/f}
-    \caption{All zip codes}
-    \label{SUBFIGURE LABEL 3}
+    \includegraphics[width=.95\linewidth]{figures/framework/iid_cluster.pdf}
+    %\caption{All zip codes}
+    %\label{SUBFIGURE LABEL 3}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False.pdf}
-    \caption{High Eviction Zip Codes}
-    \label{SUBFIGURE LABEL 4}
+    \includegraphics[width=.95\linewidth]{figures/framework/nearest_neighbors_increasing_correlation.pdf}
+    %\caption{High Eviction Zip Codes}
+    %\label{SUBFIGURE LABEL 4}
 \end{subfigure}
-\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
-\label{FIGURE LABEL}
+%\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+%\label{FIGURE LABEL}
 \end{figure}
 
-The above issues are perhaps only magnified as we increase the dimensionality of the data
+
+
+The central challenge is how to incorporate a cluster indicator in the training phase so that the function adaptively pools information across clusters, without using the cluster indicator in the inference phase. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions!
 
 \section{Right to Counsel}
 In this paper, the term \textit{The Right to Counsel} refers to a policy initiative which ensures that tenants have access to free legal representation in eviction cases. Unlike criminal cases in the U.S., defendants in an eviction case are not provided with a public attorney. A gap in legal representation therefore exists between landlords and tenants which \cite{collinson2022eviction} has documented to be as large as $95\%-1\%$ in some areas in favor of the landlord.
@@ -147,7 +149,7 @@ We fit the following difference-in-difference estimator.
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False.pdf}
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_True.pdf}
     \caption{High Eviction Zip Codes}
     \label{SUBFIGURE LABEL 4}
 \end{subfigure}
