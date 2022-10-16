@@ -139,6 +139,13 @@ In order to motivate the specific approach of this paper, it is important to hig
 This paper takes a ``noisy'' first step towards addressing both of these issues. First, it exploits the ongoing rollout of the policy across the state of Connecticut where, due to supply constraints of legal services, only low-income individuals in certain zip codes currently receive free legal aid. Second it makes use of data from the U.S. Department of Housing and Urban Development which measures both the characteristics of individuals experiencing homelessness (race, gender, family structure) as well as their length of their housing search. Importantly, this data set is restricted to households who don't face significant barriers to housing. That is, households who are thought to require only limited and partial support. The search length of these households (reflected in the \textcolor{blue}{blue} transition arrows in figure \ref{fig:1}) are therefore a key outcome variable for policy makers are likely a strong indication of whether there are adverse effects of the policy at scale. 
 
 Lastly, while no pre-analysis plan accompanies this paper, the only source of heterogeneity explored is the effects of the policy on Black and female tenants. As well documented in the eviction literature, these subgroups share the greatest likelihood and costs of evictions, as \cite{desmond2019unaffordable} writes, ``Low-income women, especially poor black women, are at high risk of eviction'', and \cite{collinson2022eviction} notes that with regards to the costs of evictions, ``We find particularly sharp negative impacts for female and Black tenants, who drive the effects on labor market outcomes, residential mobility, and interactions with homelessness.'' It seems likely, therefore, that if landlords respond in an adverse way to The Right to Counsel, it would be be towards this sub-population in particular. Hence, all regression specifications are fit both over the entire sample and this sub-sample of interest.
+
+\section{Policy Details}
+\subsection{Timeline}
+In June of 2021, Governor Lamont of Connecticut signed into law the Right to Counsel (3). As highlighted in the timeline below, this event coincides with the end of the local moratorium on evictions (4) in Connecticut. Six months later, on January 31, 2022, as Covid-19 relief was winding down, the Right to Counsel went into effect. A detailed description of the timeline is provided in the appendix, but key dates of interest, including the start and end of local and national moratoriums, are illustrated below. 
+\par 
+\input{rtg/context/timeline}
+
 \section{Empirical Strategy}
 In contrast to many applied microeconomic papers that assess the sensitivity of their results by varying the selection of the controls in their regression models, we follow the framework presented in our accompanying paper \href{https://github.com/pharringtonp19/rfp_paper/blob/main/Regularizing_the_Forward_Pass.pdf}{Regularizing the Forward Pass} which keeps the set of controls fixed and explores how the estimate varies as we expand the function space that we search over.\footnote{If you are familiar with our ongoing work, you will notice that we have not yet applied the full model in this paper. We plan to do so in the next iteration of the paper.}\par 
 
@@ -182,6 +189,23 @@ We then add individual level and zip code controls to the regression specificati
     Y_i &= \alpha _0 + \beta_0 \textrm{Post}_i \times \textrm{Treated}_i + \beta_1  \textrm{Post}_i + \beta_2 \textrm{Treated}_i \\ 
     &\quad + \beta _3X_i + \beta_4 Z_i + \varepsilon_i
 \end{align*}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_False.pdf}
+    \caption{All zip codes}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_True.pdf}
+    \caption{High Eviction Zip Codes}
+    \label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\label{FIGURE LABEL}
+\end{figure}
 
 \subsection{Partially Linear Difference-in-Difference}
 As suggested by the explicit functional form, the above estimator doesn't have a non-parametric analogue which may make the interpretation suspect or difficult to some.\footnote{To be clear about this point, it's not obvious how to interpret the coefficient of interest as the result of regression residuals on residuals in the spirit of via Frisch-Waugh-Lovell. That is, the estimator does not have the following nonparametric equivalent: 
@@ -210,6 +234,10 @@ A drawback of the above approach is that it makes no correction for the propensi
 
 In contrast to the recent Economic literature, though, this paper empirically considers the indirect effects of the policy, thereby complementing \cite{cassidy2022effects} which empirically focuses on the direct effects, and \cite{abramson2021welfare} which considers the indirect effects via a counterfactual exercise.
 \section{Conclusion}
+As a general statement, Economists are interested in understanding the effects of policies at scale. Almost by definition, though, these effects are not well identified.\footnote{The example of cross-country regression highlights this lack of identification} Therefore, the aim is often to capture a particular effect of the policy as it's in the process of being deployed at scale with the hope that this intermediate measurement might be informative about the effects of the policy under the new equilibrium.\par 
+In this paper, where we're interested in studying the effects of the Right to Counsel at scale, we take as our intermediate measurement the length of the housing search process for low-income individuals. The thinking being that if there are adverse effects of this policy, that is, if landlords decide to reoptimize in response to the implicit higher eviction costs that the Right to Counsel places on them, we would see it via the housing search channel. \par 
+And indeed, while extremely preliminary, we see some indication that there may be adverse effects along this channel. While noisy the estimates suggest that the policy may make it more difficult on average to find housing and in particular for African American women. We caution, though, that our results are preliminary. 
+
 \bibliographystyle{plainnat}
 \bibliography{bibliography.bib}
 \end{document} 
