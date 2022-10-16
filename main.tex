@@ -107,7 +107,26 @@ The above issues are perhaps only magnified as we increase the dimensionality of
 
 
 
-The central challenge is how to incorporate a cluster indicator in the training phase so that the function adaptively pools information across clusters, without using the cluster indicator in the inference phase. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions!
+The central challenge is how to incorporate a cluster indicator in the training phase so that the function adaptively pools information across clusters, without using the cluster indicator in the inference phase. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/gradient_descent_motivating_example.pdf}
+    %\caption{All zip codes}
+    %\label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/gradient_descent_motivating_example_tune.pdf}
+    %\caption{High Eviction Zip Codes}
+    %\label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/jmp_paper/blob/main/notebooks/gradient_descent_motivating_example.ipynb}{Reproduced Here}}
+%\label{FIGURE LABEL}
+\end{figure}
+
 
 \section{Right to Counsel}
 In this paper, the term \textit{The Right to Counsel} refers to a policy initiative which ensures that tenants have access to free legal representation in eviction cases. Unlike criminal cases in the U.S., defendants in an eviction case are not provided with a public attorney. A gap in legal representation therefore exists between landlords and tenants which \cite{collinson2022eviction} has documented to be as large as $95\%-1\%$ in some areas in favor of the landlord.
