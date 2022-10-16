@@ -1,0 +1,83 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{etoolbox} \usepackage[english]{babel} \usepackage[utf8]{inputenc} \usepackage{amsmath} \usepackage{amsfonts} \usepackage{amsthm} \usepackage{graphicx} \usepackage[colorinlistoftodos]{todonotes} \usepackage{amsfonts} \usepackage{bbm} \usepackage{natbib} \usepackage{setspace} \usepackage{enumitem}
+\usepackage{pdfsync} \usepackage{xr}
+\usepackage[ruled]{algorithm2e}
+\usepackage{tikz}
+\usepackage{subfig}
+\usepackage{authblk} % NEW!!!
+\bibliographystyle{econometrica}
+
+
+\newtheorem{theorem}{Theorem}[section] \newtheorem{proposition}{Proposition}[section] \newtheorem{lemma}{Lemma}[section]
+
+% \newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example} \newtheorem{corollary}{Corollary}[section] \newtheorem{remark}{Remark}[section] \newtheorem{assumption}{Assumption} \newcommand{\citeposs}[1]{\citeauthor{#1}'s \citeyearpar{#1}} \newcommand\fnote[1]{\captionsetup{font=small}\caption*{#1}}
+
+\def\qed{\rule{2mm}{2mm}} \parskip = 1.5ex
+\textwidth 7in
+\textheight 10 in
+\oddsidemargin -0.4 in
+\evensidemargin -0.4in
+\topmargin -0.7in
+
+
+
+
+
+\begin{document}
+
+
+\begin{titlepage}
+\title{Regularizing the Forward Pass: Assessing the Right to Counsel at Scale}
+%\shortTitle{Short title for running head}
+
+\author{Patrick Power, Shomik Ghosh and Markus Schwedeler}
+\date{\today}
+\maketitle
+\thispagestyle{empty} % makes the title page number not appear
+\vspace{-2em}
+\begin{abstract}
+ Applied microeconomic work involves making tradeoffs -- assessing which issues are first order, and which can potentially be addressed in an appendix or not at all. Based on the deep learning literature of meta-learning and neural ordinary differential equations, and in the language of category theory, we introduce a unified structure that allows one to think through these tradeoffs: the structure generalizes ordinary least squares, allows for nonparametric cluster effects, and is inherently compositional even under regularization. We then use this framework to assess the effectiveness of an initiative,  growing in popularity across the U.S., known as the Right to Counsel (RTC). Aiming to combat the 3.6 million eviction fillings that occur each year in the U.S., the Right to Counsel ensures access to free legal representation for low-income individuals facing eviction. Complimenting the small, but growing Economic literature on the topic, we consider the indirect effects of this policy. Exploiting the staggered roll-out across the state of Connecticut, we specifically consider whether the policy makes it harder for those currently unhoused to find housing. As some have suggested, if the Right to Counsel increases the cost of evicting a tenant,\footnote{Indeed one of the most consistent findings across the literature is the increase in processing time: \cite{cassidy2022effects} writes: ``The number of days between a case filing and a judgment is also significantly longer in the UA zip codes after program implementation.''} landlords might respond by making it harder for low-income individuals to rent a unit in the first place. Using data from the U.S. Department of Housing and Urban Development, our initial results point towards an increase in the length of the housing search in response to the policy. This effect points higher for African American women in particular. We caution, though, that our results are extremely preliminary as the implementation of the policy is ongoing.
+\vspace{0.2in}\\
+\noindent\textbf{Keywords:} deep learning, evictions\\
+%\noindent\textbf{JEL Codes:} key1, key2, key3\\
+\end{abstract}
+\setcounter{page}{1}
+\end{titlepage}
+
+%\thispagestyle{empty}
+
+%\pagebreak \newpage
+
+
+%\oneandhalfspacing
+
+\section{Framework Introduction}
+\subsection{Motivation}
+Rarely is there a pre-established estimator that addresses most of the issues competing for ``first-order" importance in applied microeconomic studies. Data is  messy -- clusters of individuals receive the same treatment; people drop out of the sample; outcomes get censored; selection into treatment is unknown. Because of this, it can be helpful to have methods that are \textbf{well-targeted} (i.e. address a specific issue) and \textbf{composable} (i.e. the components fit together) so that researchers can adjust their models to their specific context. With this aim in mind, we illustrate that a regularized version of \cite{finn2017model} composed with a regularized neural ODE (\cite{kelly2020learning}) offers a conceptually simple way to adjust one's estimator for the presence of clustered data as well as to flexibly control the hypothesis space of the model. We highlight the usefulness of this approach both in terms of estimating nonparametric conditional expectation functions as well as low dimensional parameters of interest.
+\subsection{Preview of Results}
+In the language of Category theory, training the model is done in the Kleisi Category while inference occurs in the Category of Sets. Note for visual clarify we assume that composition of functions is of higher precedence than function application.
+\input{eqns/rfp}
+\section{Problem}
+\subsection{Context}
+To keep things simple, we describe our approach in the specific context of cluster-level randomized control trials where we're interested in estimating treatment heterogeneity.\footnote{ Cluster-level randomized control trials are randomized control trials where treatment varies at a level above the unit of interest} Such experiments are common in development, education, and health settings because they are (A) generally easier to implement, (B) better adhere to the potential outcome framework\footnote{Reduce the chance of spillover effects between treated and non-treated individuals.} and perhaps most importantly\footnote{See John Lists's book, `The Voltage Effect` which highlights this importance in great detail} (C) allow us to understand the the effects of scaling the treatment.\footnote{Many large scale studies such as HIE prefer to include many control variables in their regression specification: size of family, age categories, education level, income, self-reported health status, and use of medical care in the year prior to the start of the experiment, kind of insurance (if any) the person had prior to the experiment, whether family members grew up in a city, suburb, or town, and spending on medical care and dental care prior to the experiment} With a binary treatment variable, such a problem can be decomposed into two separate problems where the objective function is minimized separately over the treatment and control groups.
+
+\begin{align*}
+    \underset{f \in \sigma(X)}{\text{inf}} \ E\big[(Y - f)^2\big]
+\end{align*}
+ 
+
+\subsection{Challenge (\textcolor{blue}{The Tragic Triad})\footnote{The expression "tragic triad" is taken from Gradient Surgery for Multi-Task Learning}}
+Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each treatment group:
+\begin{enumerate}
+    \item We observe only a subset of the clusters
+    \item The distribution of covariates can differ across clusters
+    \item The distribution of outcomes conditional on covariates may differ across clusters
+\end{enumerate}
+
+The above issues are perhaps only magnified as we increase the dimensionality of the data
+\bibliographystyle{plainnat}
+\bibliography{bibliography.bib}
+\end{document} 
+
