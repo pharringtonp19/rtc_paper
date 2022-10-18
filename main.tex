@@ -229,6 +229,19 @@ adaptation time; they already contain good features from the meta-initialization
 \end{figure}
 \section{Parametric Estimation}
 What may not be clear from the above presentation is why this approach is useful for estimating finite parameters of interest. The thinking being that linear regression already partial out the cluster effect. In this context, though, when treatment varies at the level of the cluster, a cross-section regression with cluster level fixed effects 
+
+As suggested by the explicit functional form, the above estimator doesn't have a non-parametric analogue which may make the interpretation suspect or difficult to some.\footnote{To be clear about this point, it's not obvious how to interpret the coefficient of interest as the result of regression residuals on residuals in the spirit of via Frisch-Waugh-Lovell. That is, the estimator does not have the following nonparametric equivalent: 
+\begin{align*}
+    Y_i - f_{\theta _1}(Y_i) = \beta_0 (D_i-f_{\theta _2}(D_i)) + \varepsilon_i
+\end{align*}}
+The natural extension to the difference-in-difference estimator such that it has a Frisch-Waugh-Lovell type of interpretation is the following model where we approximate the conditional expectations via neural network-based estimators.
+
+\begin{itemize}
+  \item In the post period, $\mathbb{P}_X,\mathbb{P}_{Y|X}$ might differ because of time and because of the policy
+\end{itemize}
+\begin{align*}
+    Y_{1} - \mathbb{E}[Y_{0} | X_i] &= \beta _0 \big(D_i - \mathbb{E}[D_1 | X_1]\big) + \varepsilon_i
+\end{align*}
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
@@ -331,13 +344,13 @@ We fit the following difference-in-difference estimator.
 \centering
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False.pdf}
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_False_False.pdf}
     \caption{All zip codes}
     \label{SUBFIGURE LABEL 3}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_True.pdf}
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_True_False.pdf}
     \caption{High Eviction Zip Codes}
     \label{SUBFIGURE LABEL 4}
 \end{subfigure}
@@ -370,18 +383,7 @@ We then add individual level and zip code controls to the regression specificati
 \end{figure}
 
 \subsection{Partially Linear Difference-in-Difference}
-As suggested by the explicit functional form, the above estimator doesn't have a non-parametric analogue which may make the interpretation suspect or difficult to some.\footnote{To be clear about this point, it's not obvious how to interpret the coefficient of interest as the result of regression residuals on residuals in the spirit of via Frisch-Waugh-Lovell. That is, the estimator does not have the following nonparametric equivalent: 
-\begin{align*}
-    Y_i - f_{\theta _1}(Y_i) = \beta_0 (D_i-f_{\theta _2}(D_i)) + \varepsilon_i
-\end{align*}}
-The natural extension to the difference-in-difference estimator such that it has a Frisch-Waugh-Lovell type of interpretation is the following model where we approximate the conditional expectations via neural network-based estimators.
 
-\begin{itemize}
-  \item In the post period, $\mathbb{P}_X,\mathbb{P}_{Y|X}$ might differ because of time and because of the policy
-\end{itemize}
-\begin{align*}
-    Y_{1} - \mathbb{E}[Y_{0} | X_i] &= \beta _0 \big(D_i - \mathbb{E}[D_1 | X_1]\big) + \varepsilon_i
-\end{align*}
 \subsection{Nonparametric Difference-in-Difference}
 A drawback of the above approach is that it makes no correction for the propensity score. 
 
