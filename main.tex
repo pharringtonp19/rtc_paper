@@ -1,24 +1,29 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{etoolbox} \usepackage[english]{babel} \usepackage[utf8]{inputenc} \usepackage{amsmath} \usepackage{amsfonts} \usepackage{amsthm} \usepackage{graphicx} \usepackage[colorinlistoftodos]{todonotes} \usepackage{amsfonts} \usepackage{bbm} \usepackage{natbib} \usepackage{setspace} \usepackage{enumitem}
+\usepackage{etoolbox} \usepackage[english]{babel} \usepackage[utf8]{inputenc} \usepackage{amsmath} \usepackage{amsfonts} \usepackage{amsthm} \usepackage{graphicx} \usepackage[colorinlistoftodos]{todonotes} \usepackage{amsfonts} \usepackage{bbm} 
+\usepackage{setspace} 
+\usepackage{enumitem}
 \usepackage{pdfsync} \usepackage{xr}
 \usepackage[ruled]{algorithm2e}
 \usepackage{tikz}
 \usepackage{caption}
 \usepackage{subcaption}
-\usepackage{authblk} % NEW!!!
-\bibliographystyle{econometrica}
+% \usepackage{authblk} % NEW!!!
+% \bibliographystyle{econometrica}
+
+\bibliographystyle{plainnat}
 \usepackage{hyperref}       % hyperlinks
 \hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    filecolor=magenta,      
-    urlcolor=purple,
+    colorlinks=True,
+    citecolor=blue,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
     pdftitle={RFP},
     pdfpagemode=FullScreen,
     }
 
-
+\usepackage{natbib}
 
 \newtheorem{theorem}{Theorem}[section] \newtheorem{proposition}{Proposition}[section] \newtheorem{lemma}{Lemma}[section]
 
@@ -40,7 +45,7 @@
 
 
 \begin{titlepage}
-\title{Regularizing the Forward Pass: Assessing the Right to Counsel at Scale}
+\title{A Deep Learning Assessment of the Right to Counsel}
 %\shortTitle{Short title for running head}
 
 \author{Patrick Power, Shomik Ghosh and Markus Schwedeler}
@@ -49,9 +54,9 @@
 \thispagestyle{empty} % makes the title page number not appear
 \vspace{-2em}
 \begin{abstract}
- Applied microeconomic work involves making tradeoffs -- assessing which issues are first order, and which can potentially be addressed in an appendix or not at all. Based on the deep learning literature of meta-learning and neural ordinary differential equations, and in the language of category theory, we introduce a unified structure that allows one to think through these tradeoffs: the structure generalizes ordinary least squares, allows for nonparametric cluster effects, and is inherently compositional even under regularization. We then use this framework to assess the effectiveness of an initiative,  growing in popularity across the U.S., known as the Right to Counsel (RTC). Aiming to combat the 3.6 million eviction fillings that occur each year in the U.S., the Right to Counsel ensures access to free legal representation for low-income individuals facing eviction. Complimenting the small, but growing Economic literature on the topic, we consider the indirect effects of this policy. Specifically, we consider whether the policy makes it harder for those currently unhoused to find housing. As some have suggested, if the Right to Counsel increases the cost of evicting a tenant,\footnote{Indeed one of the most consistent findings across the literature is the increase in processing time: \cite{cassidy2022effects} writes: ``The number of days between a case filing and a judgment is also significantly longer in the UA zip codes after program implementation.''} landlords might respond by making it harder for low-income individuals to rent a unit in the first place. Using data from the U.S. Department of Housing and Urban Development, and exploiting the staggered roll-out across the state of Connecticut, our initial results point towards an increase in the length of the housing search in response to the policy. This effect points higher for African American women in particular. We caution, though, that our results are extremely preliminary as the implementation of the policy is ongoing.
+Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a simple and unified structure that generalizes ordinary least squares, allows for nonparametric cluster effects, and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Complimenting the existing Economic Literature on the topic, we consider the extent to which the policy makes it harder for low-income individuals to find housing. As some have suggested, if the Right to Counsel increases the cost of evicting a tenant, landlords might respond by making it more difficult to rent a unit in the first place. Exploiting the staggered roll-out of the policy across the state of Connecticut, our preliminary results suggest that certain subsets of the population may be adversely affected by the policy. 
 \vspace{0.2in}\\
-\noindent\textbf{Keywords:} deep learning, evictions\\
+\noindent\textbf{Keywords:} Deep Learning, Evictions, Right to Counsel\\
 %\noindent\textbf{JEL Codes:} key1, key2, key3\\
 \end{abstract}
 \setcounter{page}{1}
@@ -67,8 +72,8 @@
 \section{Framework Introduction}
 \subsection{Motivation}
 Rarely is there a pre-established estimator that addresses most of the issues competing for ``first-order" importance in applied microeconomic studies. Data is  messy -- clusters of individuals receive the same treatment; people drop out of the sample; outcomes get censored; selection into treatment is unknown. Because of this, it can be helpful to have methods that are \textbf{well-targeted} (i.e. address a specific issue) and \textbf{composable} (i.e. the components fit together) so that researchers can adjust their models to their specific context. With this aim in mind, we illustrate that a regularized version of \cite{finn2017model} composed with a regularized neural ODE (\cite{kelly2020learning}) offers a conceptually simple way to adjust one's estimator for the presence of clustered data as well as to flexibly control the hypothesis space of the model. We highlight the usefulness of this approach both in terms of estimating nonparametric conditional expectation functions as well as low dimensional parameters of interest.
-\subsection{Preview of Results}
-In the language of Category theory, training the model is done in the Kleisi Category while inference occurs in the Category of Sets. Note for visual clarify we assume that composition of functions is of higher precedence than function application.
+\subsection{Model}
+In the language of Category theory, training the model is done in the Kleisi Category while inference occurs in the Category of Sets. Note for visual clarify we assume that composition of functions is of higher precedence than function application.\footnote{Expressing the framework in the language of category theory provides one with a clear way to understand the framework.}
 \input{eqns/rfp}
 \section{Problem}
 \subsection{Context}
@@ -126,7 +131,29 @@ The central challenge is how to incorporate a cluster indicator in the training 
 \caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/jmp_paper/blob/main/notebooks/gradient_descent_motivating_example.ipynb}{Reproduced Here}}
 %\label{FIGURE LABEL}
 \end{figure}
-
+\section{Methodological Approach}
+\begin{itemize}
+    \item optimization based meta-learning algorithms
+\end{itemize}
+\begin{quote}
+Model Agnostic Meta-Learning (MAML), a method that consists of two optimization loops, with the outer loop finding a meta-initialization,
+from which the inner loop can efficiently learn new tasks.-- \cite{raghu2019rapid}
+\end{quote}
+\begin{quote}
+    Does the meta-initialization learned by the
+outer loop result in rapid learning on unseen test tasks (efficient but significant changes in the
+representations) or is the success primarily due to feature reuse (with the meta-initialization already
+providing high quality representations)? -- \cite{raghu2019rapid}
+\end{quote}
+\begin{quote}
+    The results strongly support feature reuse as the predominant factor
+behind MAML’s success-- \cite{raghu2019rapid}
+\end{quote}
+\begin{quote}
+    We find that freezing even all four convolutional layers of the network (all layers except the network head) hardly
+affects accuracy. This strongly supports the feature reuse hypothesis: layers don’t have to change rapidly at
+adaptation time; they already contain good features from the meta-initialization.-- \cite{raghu2019rapid}
+\end{quote}
 
 \section{Right to Counsel}
 In this paper, the term \textit{The Right to Counsel} refers to a policy initiative which ensures that tenants have access to free legal representation in eviction cases. Unlike criminal cases in the U.S., defendants in an eviction case are not provided with a public attorney. A gap in legal representation therefore exists between landlords and tenants which \cite{collinson2022eviction} has documented to be as large as $95\%-1\%$ in some areas in favor of the landlord.
@@ -184,7 +211,11 @@ and applying for assistance.''} Given that the lack of enforcement with respect 
 
 \subsection{Data \& Outcomes}
 As referenced prior, the outcome of interest is the search length for households who are currently experiencing homelessness but face limited barriers to housing. Rapid Re-housing, a federally tracked program, provides limited short term assistance to exactly this population. Its aim is to help ``families exit shelters and get back into permanent housing quickly.''\footnote{\textrm{Missing Source}} While different in nature than an independent housing search, the search length of individuals in a Rapid Rehousing program a reasonable proxy for the following three reasons. First, Rapid Rehousing programs ``serve people experiencing homelessness with no preconditions such as employment, income, absence of criminal record, or sobriety.''\footnote{\href{https://www.urban.org/sites/default/files/publication/99153/rapid_re-housings_role_in_responding_to_homelessness_3.pdf}{Reference}} Second, the program does not target people who might need long-term assistance. Those individuals and families are helped by permanent supportive housing programs.\footnote{Very different from permanent supportive housing which is as Rosanne Haggerty writes in the NyTimes, ``is ideal for those with serious health challenges who have been homeless for long periods of time''.\footnote{\href{https://www.nytimes.com/roomfordebate/2015/02/19/homes-for-the-homeless/for-even-the-neediest-housing-is-the-solution-to-homelessness}{NyTimes}}}\footnote{ \textbf{Cost}: at $\$6,678$ per family, it is cheaper than transitional housing at $\$32,557$ per family.\footnote{\href{https://cceh.org/provider-resources/rapid-rehousing/}{CCEH Video}}} Third, the lease agreement households sign come with ``the same rights and responsibilities as a typical lease holder.''\footnote{\href{thttps://endhomelessness.org/resource/rapid-re-housing-a-history-and-core-components/}{It} is imperative that any lease agreement provides the tenant with **the same rights and responsibilities as a typical lease holder** and that the financial terms of the lease are such that the household has a reasonable ability to assume rental costs once financial support ends (keeping in mind that in the majority of cases, even households with no income at move-in retain their housing)"}
-\input{rtg/context/joint/counts}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{figures/rtc/context/rrh_counts.pdf}
+        \caption{Treatment status for each zip code (yellow indicates treated zip code): \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/plot/summary_rrh.py}{Reproduced Here}}
+\end{figure}
 
 \section{Empirical Strategy}
 In contrast to many applied microeconomic papers that assess the sensitivity of their results by varying the selection of the controls in their regression models, we follow the framework presented in our accompanying paper \href{https://github.com/pharringtonp19/rfp_paper/blob/main/Regularizing_the_Forward_Pass.pdf}{Regularizing the Forward Pass} which keeps the set of controls fixed and explores how the estimate varies as we expand the function space that we search over.\footnote{If you are familiar with our ongoing work, you will notice that we have not yet applied the full model in this paper. We plan to do so in the next iteration of the paper.}\par 
@@ -257,11 +288,9 @@ The natural extension to the difference-in-difference estimator such that it has
 \begin{itemize}
   \item In the post period, $\mathbb{P}_X,\mathbb{P}_{Y|X}$ might differ because of time and because of the policy
 \end{itemize}
-
 \begin{align*}
-    Y_{it} - \mathbb{E}[Y_{it} | X_i, Z_i] &= \beta _0 \big(D_i - \mathbb{E}[D_{i} | X_{i}]\big)t + \beta_1 \big(D_i - \mathbb{E}[D_{i} \mid X_{i}]\big) + \varepsilon_i
+    Y_{1} - \mathbb{E}[Y_{0} | X_i] &= \beta _0 \big(D_i - \mathbb{E}[D_1 | X_1]\big) + \varepsilon_i
 \end{align*}
-
 \subsection{Nonparametric Difference-in-Difference}
 A drawback of the above approach is that it makes no correction for the propensity score. 
 \begin{align*}
@@ -278,7 +307,7 @@ As a general statement, Economists are interested in understanding the effects o
 In this paper, where we're interested in studying the effects of the Right to Counsel at scale, we take as our intermediate measurement the length of the housing search process for low-income individuals. The thinking being that if there are adverse effects of this policy, that is, if landlords decide to reoptimize in response to the implicit higher eviction costs that the Right to Counsel places on them, we would see it via the housing search channel. \par 
 And indeed, while extremely preliminary, we see some indication that there may be adverse effects along this channel. While noisy the estimates suggest that the policy may make it more difficult on average to find housing and in particular for African American women. We caution, though, that our results are preliminary. 
 
-\bibliographystyle{plainnat}
+%\bibliographystyle{plainnat}
 \bibliography{bibliography.bib}
 \end{document} 
 
