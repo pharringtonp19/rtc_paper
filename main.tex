@@ -68,7 +68,7 @@ Drawing from the Deep Learning Literature and in the language of Category Theory
 
 
 %\oneandhalfspacing
-
+The paper can be decomposed into two main parts. In the first section, we introduce our empirical framework. In the second section, we apply this framework to better understand the consequences of the Right to Counsel. 
 \section{Framework Introduction}
 \subsection{Motivation}
 Rarely is there a pre-established estimator that addresses most of the issues competing for ``first-order" importance in applied microeconomic studies. Data is  messy -- clusters of individuals receive the same treatment; people drop out of the sample; outcomes get censored; selection into treatment is unknown. Because of this, it can be helpful to have methods that are \textbf{well-targeted} (i.e. address a specific issue) and \textbf{composable} (i.e. the components fit together) so that researchers can adjust their models to their specific context. With this aim in mind, we illustrate that a regularized version of \cite{finn2017model} composed with a regularized neural ODE (\cite{kelly2020learning}) offers a conceptually simple way to adjust one's estimator for the presence of clustered data as well as to flexibly control the hypothesis space of the model. We highlight the usefulness of this approach both in terms of estimating nonparametric conditional expectation functions as well as low dimensional parameters of interest.
@@ -132,6 +132,55 @@ The central challenge is how to incorporate a cluster indicator in the training 
 %\label{FIGURE LABEL}
 \end{figure}
 \section{Methodological Approach}
+
+As applied microeconomists, we are accustomed to writing our problem as a bi-level optimization problem so as to better distinguish between the parameters of interest and the nuisance parameters. In this context, the nuisance parameters are cluster specific parameters that are ``fit'' during the inner optimization process. 
+ 
+\begin{align*}
+    \mathcal{L}(\theta) &:= \sum _c \mathcal{L}_c(\theta), \quad \mathcal{L}_c(\theta) := F(\theta, \theta^*_c(\theta)), \quad  \theta_c^*(\theta) := \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) 
+\end{align*}
+\begin{align*}
+    \theta ^* &= \underset{\theta}{\textrm{argmin}}\ \mathcal{L}(\theta) \\ 
+    &= \underset{\theta}{\textrm{argmin}}\ \sum _c \mathcal{L}_c(\theta)\\ 
+    &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \theta^*_c(\theta))\\
+    &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) )\\
+\end{align*}
+With “Classical” under-parameterized models, as in the case of linear regression, $F$, the clustere-specific empirical loss function is exactly what you would expect. 
+\begin{align*}
+    F(\theta, \theta_c^*(\theta)) := \sum _{i \in c}\big(y_i - \theta^Td_i - \theta _c^*(\theta)^Tx_i \big)^2
+\end{align*}
+ With“Modern” over-parameterized models, though, like the ones that we target in this paper, we make the following adjustments 
+ \begin{enumerate}
+     \item We restrict the objective function that is used to implicitly define the cluster specific maps. Without some form of augmentation/regularization, we can lose the learning signal as these models are capable of perfectly interpolating the data. 
+     \item We generalize the above set-up by allowing the cluster specific parameters to be in one-to-one correspondance with the parameters of interest. 
+     \item We add a penalty term to the cluster specific loss function to ensure that adaptation happens in the right space. 
+ \end{enumerate}
+ Taken together, these three points illustrate that approach is simply a regularized version of MAML. Although, as we highlight through extensive similations, the regularization part is key. 
+ 
+ 
+\begin{align*}
+    \hat{\theta}_c^*(\theta) &:= \underset{\theta_c}{\textrm{argmin}} \ G(\theta, \theta_c)  \\
+    G(\theta, \theta_c)&= 
+\end{align*}
+Define our empirical cluster parameters in relation to the parameters of interest 
+\begin{align*}
+    F(\theta) := \sum _{i \in c}\big(y_i - f(\theta_c^*(\theta), x_i)\big)^2
+\end{align*}
+As well as introduce an auxilliary term to the cluster specific loss function: 
+\begin{align*}
+    \mathcal{L}_{c}(\theta) &= F(\theta) + H(\textrm{Path}(\theta, \hat{\theta}^*_c(\theta)))
+\end{align*}
+
+\begin{align*} 
+&\text{regMAML} :: \text{Data} \rightarrow \text{Params} \rightarrow \big(\textrm{Params}, \text{Float}\big) \\
+&\text{regMAML} \ \textcolor{blue}{\text{data}} \ \textcolor{purple}{\theta} := \Big(\text{Update}_m \circ \text{Update}_{m-1} \dots \circ \text{Update}_1 \Big) \ \textcolor{purple}{\theta}, \quad \mathcal{L}_c(\textcolor{blue}{\text{data}}, \textcolor{purple}{\theta})  \\ 
+&  \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \text{where} \quad  \text{Update}_t \  \theta = \theta - \alpha_t \nabla \mathcal{L}_c(\textcolor{blue}{\text{data}}, \textcolor{purple}{\theta})
+\end{align*}
+
+\begin{align*}
+    &\text{regNeuralODE} :: \text{Data} \rightarrow \text{Params} \rightarrow \big(\textrm{Data}, \text{Float}\big) \\
+&\text{regNeuralODE} \ \_ \ \textcolor{blue}{x} \ \_ \ \textcolor{purple}{\theta} := x + \int f(t, x(t), \theta)dt, \quad \int \Big\| \frac{\partial ^k}{dt^k}f(t, x(t), \theta) \Big\|dt \\ 
+& \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \text{where}  \quad x(0)=x \\ \\ 
+\end{align*}
 \begin{itemize}
     \item optimization based meta-learning algorithms
 \end{itemize}
@@ -154,7 +203,24 @@ behind MAML’s success-- \cite{raghu2019rapid}
 affects accuracy. This strongly supports the feature reuse hypothesis: layers don’t have to change rapidly at
 adaptation time; they already contain good features from the meta-initialization.-- \cite{raghu2019rapid}
 \end{quote}
-
+\section{Parametric Estimation}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_True.png}
+    \caption{Original Paper}
+    %\label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_False.png}
+        \caption{Nonuniform Propensity Score}
+    %\label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/examples/scripts/dml.py}{Reproduced Here}: The sampling distribution of a Double Machine Learning Based Neural Network Estimator under selection on observables. }
+\label{FIGURE LABEL}
+\end{figure}
 \section{Right to Counsel}
 In this paper, the term \textit{The Right to Counsel} refers to a policy initiative which ensures that tenants have access to free legal representation in eviction cases. Unlike criminal cases in the U.S., defendants in an eviction case are not provided with a public attorney. A gap in legal representation therefore exists between landlords and tenants which \cite{collinson2022eviction} has documented to be as large as $95\%-1\%$ in some areas in favor of the landlord.
 \subsection{Background \& Motivation}
@@ -293,6 +359,7 @@ The natural extension to the difference-in-difference estimator such that it has
 \end{align*}
 \subsection{Nonparametric Difference-in-Difference}
 A drawback of the above approach is that it makes no correction for the propensity score. 
+
 \begin{align*}
     \beta _0 = \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
 \end{align*}
