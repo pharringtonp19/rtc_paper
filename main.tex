@@ -203,7 +203,32 @@ behind MAML’s success-- \cite{raghu2019rapid}
 affects accuracy. This strongly supports the feature reuse hypothesis: layers don’t have to change rapidly at
 adaptation time; they already contain good features from the meta-initialization.-- \cite{raghu2019rapid}
 \end{quote}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.32\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/grad_desc_toy_Standard.png}
+    \caption{Standard Training}
+    %\label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.32\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/grad_desc_toy_MAML.png}
+        \caption{MAML}
+    %\label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\begin{subfigure}{.32\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/grad_desc_toy_RFP.png}
+        \caption{RFP}
+    %\label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/grad_desc_toy.ipynb}{Reproduced Here}: The grey and black dots represent data from separate clusters. Each figure corresponds to fitting a neural network to this data under different training algorithms}
+\label{FIGURE LABEL}
+\end{figure}
 \section{Parametric Estimation}
+What may not be clear from the above presentation is why this approach is useful for estimating finite parameters of interest. The thinking being that linear regression already partial out the cluster effect. In this context, though, when treatment varies at the level of the cluster, a cross-section regression with cluster level fixed effects 
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
