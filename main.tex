@@ -125,7 +125,7 @@ The central challenge is how to incorporate a cluster indicator in the training 
 \caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/local_weighted_linear_regression_no_avg_effect_LM.ipynb}{Reproduced Here}}
 \label{fig:nonparametrics}
 \end{figure}
-In constrast, subject to the appropriate hyperparameters, our method produces a reasonable estimate.
+In contrast, subject to the appropriate hyperparameters, our method produces a reasonable estimate.
 
 \begin{figure}[htbp]
 \centering
@@ -398,6 +398,12 @@ We then add individual level and zip code controls to the regression specificati
 \subsection{Partially Linear Difference-in-Difference}
 
 \subsection{Nonparametric Difference-in-Difference}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
 A drawback of the above approach is that it makes no correction for the propensity score. 
 
 \begin{align*}
