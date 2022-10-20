@@ -75,6 +75,7 @@ Rarely is there a pre-established estimator that addresses most of the issues co
 \subsection{Model}
 In the language of Category theory, training the model is done in the Kleisi Category while inference occurs in the Category of Sets. Note for visual clarify we assume that composition of functions is of higher precedence than function application.\footnote{Expressing the framework in the language of category theory provides one with a clear way to understand the framework.}
 \input{eqns/rfp}
+Such a model also makes it clear that the clusterMap can be thought of as a gradient correction that favors early stopping at the cluster level. And thereby following \cite{domingos2020every} allows us to understand our approach from a kernel perspective. 
 \section{Problem}
 \subsection{Context}
 To keep things simple, we describe our approach in the specific context of cluster-level randomized control trials where we're interested in estimating treatment heterogeneity.\footnote{ Cluster-level randomized control trials are randomized control trials where treatment varies at a level above the unit of interest} Such experiments are common in development, education, and health settings because they are (A) generally easier to implement, (B) better adhere to the potential outcome framework\footnote{Reduce the chance of spillover effects between treated and non-treated individuals.} and perhaps most importantly\footnote{See John Lists's book, `The Voltage Effect` which highlights this importance in great detail} (C) allow us to understand the the effects of scaling the treatment.\footnote{Many large scale studies such as HIE prefer to include many control variables in their regression specification: size of family, age categories, education level, income, self-reported health status, and use of medical care in the year prior to the start of the experiment, kind of insurance (if any) the person had prior to the experiment, whether family members grew up in a city, suburb, or town, and spending on medical care and dental care prior to the experiment} With a binary treatment variable, such a problem can be decomposed into two separate problems where the objective function is minimized separately over the treatment and control groups.
@@ -140,11 +141,15 @@ In contrast, subject to the appropriate hyperparameters, our method produces a r
 %\label{FIGURE LABEL}
 \end{figure}
 \section{Methodological Approach}
+\subsection{Implicit Cluster Map}
+\textbf{TL;DR} In this section, we define our implicit cluster map as a regularized version of the popular gradient based meta-learning MAML.\footnote{Model Agnostic Meta-Learning (MAML), a method that consists of two optimization loops, with the outer loop finding a meta-initialization,
+from which the inner loop can efficiently learn new tasks.-- \cite{raghu2019rapid}} While follow-up work such as \cite{raghu2019rapid} has shown that the ``the meta-initialization already providing high quality
+representations'', such an analysis assumes a cluster specific head of the network. We show that empirically, without this cluster specific head, the meta-initialization is not done in the right space which motivates our need to add an additional form of regularization.
 
-As applied microeconomists, we are accustomed to writing our problem as a bi-level optimization problem so as to better distinguish between the parameters of interest and the nuisance parameters. In this context, the nuisance parameters are cluster specific parameters that are ``fit'' during the inner optimization process. 
+As applied microeconomists, we are accustomed to writing our problem as a bi-level optimization problem so as to better distinguish between the parameters of interest and the nuisance parameters. In this context, the nuisance parameters are cluster specific parameters that are ``fit'' during the inner optimization process. Below, we follow the language used by \cite{belkin2021fit} in distinguishing between classical and modern estimation techniques.
  
 \begin{align*}
-    \mathcal{L}(\theta) &:= \sum _c \mathcal{L}_c(\theta), \quad \mathcal{L}_c(\theta) := F(\theta, \theta^*_c(\theta)), \quad  \theta_c^*(\theta) := \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) 
+    \mathcal{L}(\theta) &:= \sum _c \mathcal{L}_c(\theta), \quad \mathcal{L}_c(\theta) := G(\theta, \theta^*_c(\theta)), \quad  \theta_c^*(\theta) := \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) 
 \end{align*}
 
 With “Classical” under-parameterized models, as in the case of linear regression, $F$, the clustere-specific empirical loss function is exactly what you would expect. 
@@ -152,79 +157,43 @@ With “Classical” under-parameterized models, as in the case of linear regres
     F(\theta, \theta_c^*(\theta)) := \sum _{i \in c}\big(y_i - \theta^Td_i - \theta _c^*(\theta)^Tx_i \big)^2
 \end{align*}
  With“Modern” over-parameterized models, though, like the ones that we target in this paper, we make the following adjustments. 
- We restrict the objective function that is used to implicitly define the cluster specific maps. First, we generalize the above set-up by allowing the cluster specific parameters to be in one-to-one correspondance with the parameters of interest. Second, we constrain the implicit cluster function $\theta_c^*(\theta)$. Without some form of regularisation, given the flexibility of neural network models as illustrated in \cite{zhang2021understanding}, the jacobian of this function can easily be zero. We illustrate this concern in . And finally, we add a penalty term to the cluster specific loss function to ensure that adaptation happens in the right space. 
+ We restrict the objective function that is used to implicitly define the cluster specific maps. First, we generalize the above set-up by allowing the cluster specific parameters to be in one-to-one correspondance with the parameters of interest. Second, we constrain the implicit cluster function $\theta_c^*(\theta)$. Without some form of regularisation, given the flexibility of neural network models as illustrated in \cite{zhang2021understanding}, the jacobian of this function can easily be zero. We illustrate this concern in figure \ref{fig:Missinggrads}. And finally, we add a penalty term to the cluster specific loss function to ensure that adaptation happens in the right space. 
  
- 
-\begin{align*}
-    \hat{\theta}_c^*(\theta) &:= \underset{\theta_c}{\textrm{argmin}} \ G(\theta, \theta_c)  \\
-    G(\theta, \theta_c)&= 
-\end{align*}
-Define our empirical cluster parameters in relation to the parameters of interest 
-\begin{align*}
-    F(\theta) := \sum _{i \in c}\big(y_i - f(\theta_c^*(\theta), x_i)\big)^2
-\end{align*}
-As well as introduce an auxilliary term to the cluster specific loss function: 
-\begin{align*}
-    \mathcal{L}_{c}(\theta) &= F(\theta) + H(\textrm{Path}(\theta, \hat{\theta}^*_c(\theta)))
-\end{align*}
-
-\begin{align*} 
-&\text{regMAML} :: \text{Data} \rightarrow \text{Params} \rightarrow \big(\textrm{Params}, \text{Float}\big) \\
-&\text{regMAML} \ \textcolor{blue}{\text{data}} \ \textcolor{purple}{\theta} := \Big(\text{Update}_m \circ \text{Update}_{m-1} \dots \circ \text{Update}_1 \Big) \ \textcolor{purple}{\theta}, \quad \mathcal{L}_c(\textcolor{blue}{\text{data}}, \textcolor{purple}{\theta})  \\ 
-&  \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \text{where} \quad  \text{Update}_t \  \theta = \theta - \alpha_t \nabla \mathcal{L}_c(\textcolor{blue}{\text{data}}, \textcolor{purple}{\theta})
-\end{align*}
 
 \begin{align*}
-    &\text{regNeuralODE} :: \text{Data} \rightarrow \text{Params} \rightarrow \big(\textrm{Data}, \text{Float}\big) \\
-&\text{regNeuralODE} \ \_ \ \textcolor{blue}{x} \ \_ \ \textcolor{purple}{\theta} := x + \int f(t, x(t), \theta)dt, \quad \int \Big\| \frac{\partial ^k}{dt^k}f(t, x(t), \theta) \Big\|dt \\ 
-& \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \text{where}  \quad x(0)=x \\ \\ 
+\intertext{Define our empirical cluster parameters in relation to the parameters of interest}
+    G(\theta) &:= \sum _{i \in c}\big(y_i - f(\theta_c^*(\theta), x_i)\big)^2
+\intertext{Implicit Cluster Map}
+\theta_c^*(\theta) &:= \theta^t - \alpha \nabla_{\theta}G(\theta^{t-1}), \quad \theta^{0} = \theta 
+\intertext{As well as introduce an auxilliary term to the cluster specific loss function}
+    \mathcal{L}_{c}(\theta) &:= G(\theta) + H(\textrm{Path}(\theta, \hat{\theta}^*_c(\theta)))
 \end{align*}
-\begin{itemize}
-    \item optimization based meta-learning algorithms
-\end{itemize}
-\begin{quote}
-Model Agnostic Meta-Learning (MAML), a method that consists of two optimization loops, with the outer loop finding a meta-initialization,
-from which the inner loop can efficiently learn new tasks.-- \cite{raghu2019rapid}
-\end{quote}
-\begin{quote}
-    Does the meta-initialization learned by the
-outer loop result in rapid learning on unseen test tasks (efficient but significant changes in the
-representations) or is the success primarily due to feature reuse (with the meta-initialization already
-providing high quality representations)? -- \cite{raghu2019rapid}
-\end{quote}
-\begin{quote}
-    The results strongly support feature reuse as the predominant factor
-behind MAML’s success-- \cite{raghu2019rapid}
-\end{quote}
-\begin{quote}
-    We find that freezing even all four convolutional layers of the network (all layers except the network head) hardly
-affects accuracy. This strongly supports the feature reuse hypothesis: layers don’t have to change rapidly at
-adaptation time; they already contain good features from the meta-initialization.-- \cite{raghu2019rapid}
-\end{quote}
-
+We illustrate the relative importance of our design choices in figure \ref{fig:mamlablation}. In figure \ref{fig:overfittails} we see that supverized learning overfits to the clusters in the tails of their distributions. In figure \ref{fig:wrongspace}, we see that MAML meta initialization is in the wrong space. And finally in figure \ref{fig:rfp}, we see that a regularized version of MAML appears to learn something reasonable. 
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.32\textwidth}
     \centering
     \includegraphics[width=.95\linewidth]{figures/framework/grad_desc_toy_Standard.png}
     \caption{Standard Training}
-    %\label{SUBFIGURE LABEL 3}
+    \label{fig:overfittails}
 \end{subfigure}
 \begin{subfigure}{.32\textwidth}
     \centering
     \includegraphics[width=.95\linewidth]{figures/framework/grad_desc_toy_MAML.png}
         \caption{MAML}
-    %\label{SUBFIGURE LABEL 4}
+    \label{fig:wrongspace}
 \end{subfigure}
 \begin{subfigure}{.32\textwidth}
     \centering
     \includegraphics[width=.95\linewidth]{figures/framework/grad_desc_toy_RFP.png}
         \caption{RFP}
-    %\label{SUBFIGURE LABEL 4}
+    \label{fig:rfp}
 \end{subfigure}
 \caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/grad_desc_toy.ipynb}{Reproduced Here}: The grey and black dots represent data from separate clusters. Each figure corresponds to fitting a neural network to this data under different training algorithms}
-\label{FIGURE LABEL}
+\label{fig:mamlablation}
 \end{figure}
+\subsection{Regularized Vector Field}
+
 \section{Parametric Estimation}
 What may not be clear from the above presentation is why this approach is useful for estimating finite parameters of interest. The thinking being that linear regression already partial out the cluster effect. In this context, though, when treatment varies at the level of the cluster, a cross-section regression with cluster level fixed effects 
 
@@ -402,6 +371,13 @@ A drawback of the above approach is that it makes no correction for the propensi
 \label{FIGURE LABEL}
 \end{figure}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/fr
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
+
 \section{Related Literature}
  While this paper certainly engages with various literatures, from statistical discrimination, to applied deep learning, its central aim is to provide additional insight into the effectiveness of the Right to Counsel. \par 
  In line with the recent Economic works on the topic, it does so by offering a partial assessment of the policy ``at scale''. This approach differs significantly from some of the prior randomized control trial studies where only a limited number of judges were involved as in \cite{greiner2012limits} or where only individuals who were thought to likely benefit from legal representation were provided with laywers from private firms working pro bono as in \cite{seron2001impact}.   
@@ -420,18 +396,18 @@ And indeed, while extremely preliminary, we see some indication that there may b
 \centering
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{fi
-    %\caption{All zip codes}
+    \includegraphics[width=.95\linewidth]{figures/framework/full_inner_loop.png}
+    \caption{}
     %\label{SUBFIGURE LABEL 3}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/gradient_descent_motivating_example_tune.pdf}
-    %\caption{High Eviction Zip Codes}
+    \includegraphics[width=.95\linewidth]{figures/framework/full_inner_loop_models.png}
+    \caption{}
     %\label{SUBFIGURE LABEL 4}
 \end{subfigure}
-\caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/jmp_paper/blob/main/notebooks/gradient_descent_motivating_example.ipynb}{Reproduced Here}}
-%\label{FIGURE LABEL}
+\caption{Without regularizing the implicit cluster maps, we risk losing the signal of the gradient -- \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/Missing_Gradients.ipynb}{Reproduced Here}}
+\label{fig:Missinggrads}
 \end{figure}
 \subsection{Loss Function}
 \begin{align*}
@@ -439,6 +415,17 @@ And indeed, while extremely preliminary, we see some indication that there may b
     &= \underset{\theta}{\textrm{argmin}}\ \sum _c \mathcal{L}_c(\theta)\\ 
     &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \theta^*_c(\theta))\\
     &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) )\\
+\end{align*}
+\subsection{Haskell-like Signatures}
+\begin{align*} 
+&\text{regMAML} :: \text{Data} \rightarrow \text{Params} \rightarrow \big(\textrm{Params}, \text{Float}\big) \\
+&\text{regMAML} \ \textcolor{blue}{\text{data}} \ \textcolor{purple}{\theta} := \Big(\text{Update}_m \circ \text{Update}_{m-1} \dots \circ \text{Update}_1 \Big) \ \textcolor{purple}{\theta}, \quad \mathcal{L}_c(\textcolor{blue}{\text{data}}, \textcolor{purple}{\theta})  \\ 
+&  \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \text{where} \quad  \text{Update}_t \  \theta = \theta - \alpha_t \nabla \mathcal{L}_c(\textcolor{blue}{\text{data}}, \textcolor{purple}{\theta})
+\end{align*}
+\begin{align*}
+    &\text{regNeuralODE} :: \text{Data} \rightarrow \text{Params} \rightarrow \big(\textrm{Data}, \text{Float}\big) \\
+&\text{regNeuralODE} \ \_ \ \textcolor{blue}{x} \ \_ \ \textcolor{purple}{\theta} := x + \int f(t, x(t), \theta)dt, \quad \int \Big\| \frac{\partial ^k}{dt^k}f(t, x(t), \theta) \Big\|dt \\ 
+& \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \text{where}  \quad x(0)=x \\ \\ 
 \end{align*}
 \end{document} 
 
