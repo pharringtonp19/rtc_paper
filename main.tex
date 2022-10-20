@@ -85,29 +85,24 @@ To keep things simple, we describe our approach in the specific context of clust
  
 
 \subsection{Challenge (\textcolor{blue}{The Tragic Triad})\footnote{The expression "tragic triad" is taken from Gradient Surgery for Multi-Task Learning}}
-Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each treatment group:
-\begin{enumerate}
-    \item We observe only a subset of the clusters
-    \item The distribution of covariates can differ across clusters
-    \item The distribution of outcomes conditional on covariates may differ across clusters
-\end{enumerate}
-The above issues are perhaps only magnified as we increase the dimensionality of the data. 
+Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each treatment group: We observe only a subset of the clusters; The distribution of covariates can differ across clusters; The distribution of outcomes conditional on covariates may differ across clusters. The above issues are perhaps only magnified as we increase the dimensionality of the data.\par 
+As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions: extrapolation. It does, however, as indicated in figure \ref{fig:highb}, suggest that we may need to reconsider how we go about learning in this context
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
     \centering
     \includegraphics[width=.95\linewidth]{figures/framework/iid_cluster.pdf}
-    %\caption{All zip codes}
-    %\label{SUBFIGURE LABEL 3}
+    \caption{}
+    \label{fig:higha}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
     \includegraphics[width=.95\linewidth]{figures/framework/nearest_neighbors_increasing_correlation.pdf}
-    %\caption{High Eviction Zip Codes}
-    %\label{SUBFIGURE LABEL 4}
+    \caption{}
+    \label{fig:highb}
 \end{subfigure}
-%\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
-%\label{FIGURE LABEL}
+\caption{}
+\label{fig:high}
 \end{figure}
 
 
@@ -151,23 +146,13 @@ As applied microeconomists, we are accustomed to writing our problem as a bi-lev
 \begin{align*}
     \mathcal{L}(\theta) &:= \sum _c \mathcal{L}_c(\theta), \quad \mathcal{L}_c(\theta) := F(\theta, \theta^*_c(\theta)), \quad  \theta_c^*(\theta) := \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) 
 \end{align*}
-\begin{align*}
-    \theta ^* &= \underset{\theta}{\textrm{argmin}}\ \mathcal{L}(\theta) \\ 
-    &= \underset{\theta}{\textrm{argmin}}\ \sum _c \mathcal{L}_c(\theta)\\ 
-    &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \theta^*_c(\theta))\\
-    &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) )\\
-\end{align*}
+
 With “Classical” under-parameterized models, as in the case of linear regression, $F$, the clustere-specific empirical loss function is exactly what you would expect. 
 \begin{align*}
     F(\theta, \theta_c^*(\theta)) := \sum _{i \in c}\big(y_i - \theta^Td_i - \theta _c^*(\theta)^Tx_i \big)^2
 \end{align*}
- With“Modern” over-parameterized models, though, like the ones that we target in this paper, we make the following adjustments 
- \begin{enumerate}
-     \item We restrict the objective function that is used to implicitly define the cluster specific maps. Without some form of augmentation/regularization, we can lose the learning signal as these models are capable of perfectly interpolating the data. 
-     \item We generalize the above set-up by allowing the cluster specific parameters to be in one-to-one correspondance with the parameters of interest. 
-     \item We add a penalty term to the cluster specific loss function to ensure that adaptation happens in the right space. 
- \end{enumerate}
- Taken together, these three points illustrate that approach is simply a regularized version of MAML. Although, as we highlight through extensive similations, the regularization part is key. 
+ With“Modern” over-parameterized models, though, like the ones that we target in this paper, we make the following adjustments. 
+ We restrict the objective function that is used to implicitly define the cluster specific maps. First, we generalize the above set-up by allowing the cluster specific parameters to be in one-to-one correspondance with the parameters of interest. Second, we constrain the implicit cluster function $\theta_c^*(\theta)$. Without some form of regularisation, given the flexibility of neural network models as illustrated in \cite{zhang2021understanding}, the jacobian of this function can easily be zero. We illustrate this concern in . And finally, we add a penalty term to the cluster specific loss function to ensure that adaptation happens in the right space. 
  
  
 \begin{align*}
@@ -397,7 +382,7 @@ We then add individual level and zip code controls to the regression specificati
 
 \subsection{Partially Linear Difference-in-Difference}
 
-\subsection{Nonparametric Difference-in-Difference}
+\subsection{Regularizing the Forward Pass}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
@@ -409,6 +394,13 @@ A drawback of the above approach is that it makes no correction for the propensi
 \begin{align*}
     \beta _0 = \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
 \end{align*}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/framework/inner_loop_0.pdf}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
 
 \section{Related Literature}
  While this paper certainly engages with various literatures, from statistical discrimination, to applied deep learning, its central aim is to provide additional insight into the effectiveness of the Right to Counsel. \par 
@@ -422,5 +414,31 @@ And indeed, while extremely preliminary, we see some indication that there may b
 
 %\bibliographystyle{plainnat}
 \bibliography{bibliography.bib}
+\section{Appendix}
+\subsection{Framework Motivation}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{fi
+    %\caption{All zip codes}
+    %\label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/gradient_descent_motivating_example_tune.pdf}
+    %\caption{High Eviction Zip Codes}
+    %\label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/jmp_paper/blob/main/notebooks/gradient_descent_motivating_example.ipynb}{Reproduced Here}}
+%\label{FIGURE LABEL}
+\end{figure}
+\subsection{Loss Function}
+\begin{align*}
+    \hat{\theta} &= \underset{\theta}{\textrm{argmin}}\ \mathcal{L}(\theta) \\ 
+    &= \underset{\theta}{\textrm{argmin}}\ \sum _c \mathcal{L}_c(\theta)\\ 
+    &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \theta^*_c(\theta))\\
+    &= \underset{\theta}{\textrm{argmin}}\ \sum _c  F(\theta, \underset{\theta_c}{\textrm{argmin}} \ F(\theta, \theta_c) )\\
+\end{align*}
 \end{document} 
 
