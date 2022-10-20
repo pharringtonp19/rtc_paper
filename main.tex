@@ -345,9 +345,27 @@ We then add individual level and zip code controls to the regression specificati
 \label{FIGURE LABEL}
 \end{figure}
 
-\subsection{Partially Linear Difference-in-Difference}
+%\subsection{Partially Linear Difference-in-Difference}
 
 \subsection{Regularizing the Forward Pass}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_False.pdf}
+    \caption{All zip codes}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_True.pdf}
+    \caption{High Eviction Zip Codes}
+    \label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\label{FIGURE LABEL}
+\end{figure}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
