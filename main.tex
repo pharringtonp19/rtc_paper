@@ -52,7 +52,8 @@
 \title{A Deep Learning Assessment of the Right to Counsel}
 %\shortTitle{Short title for running head}
 
-\author{Patrick Power, Shomik Ghosh and Markus Schwedeler}
+\author{Patrick Power, Shomik Ghosh and Markus Schwedeler \\ 
+\textcolor{red}{DRAFT}}
 \date{\today}
 \maketitle
 \thispagestyle{empty} % makes the title page number not appear
@@ -60,7 +61,7 @@
 \begin{abstract}
 Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a simple and unified structure that generalizes ordinary least squares, allows for nonparametric cluster effects, and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Complimenting the existing Economic Literature on the topic, we consider the extent to which the policy makes it harder for low-income individuals to find housing. As some have suggested, if the Right to Counsel increases the cost of evicting a tenant, landlords might respond by making it more difficult to rent a unit in the first place. Exploiting the staggered roll-out of the policy across the state of Connecticut, our preliminary results suggest that certain subsets of the population may be adversely affected by the policy. 
 \vspace{0.2in}\\
-\noindent\textbf{Keywords:} Deep Learning, Evictions, Right to Counsel\\
+\noindent\textbf{Keywords:} Right to Counsel, Evictions, Deep Learning\\
 %\noindent\textbf{JEL Codes:} key1, key2, key3\\
 \end{abstract}
 \setcounter{page}{1}
@@ -90,6 +91,10 @@ like most deep learning based models, the estimator can be thought of as the com
  
 \subsection{Heterogeneity}
 Lastly, while no pre-analysis plan accompanies this paper, the only source of heterogeneity explored is the effects of the policy on Black and female tenants. As well documented in the eviction literature, these subgroups share the greatest likelihood and costs of evictions, as \cite{desmond2019unaffordable} writes, ``Low-income women, especially poor black women, are at high risk of eviction'', and \cite{collinson2022eviction} notes that with regards to the costs of evictions, ``We find particularly sharp negative impacts for female and Black tenants,\footnote{\cite{evans2019reducing} writes `} who drive the effects on labor market outcomes, residential mobility, and interactions with homelessness.'' It seems likely, therefore, that if landlords respond in an adverse way to The Right to Counsel, it would be be towards this sub-population in particular. Hence, all regression specifications are fit both over the entire sample and this sub-sample of interest.
+While this paper certainly engages with various literatures, from statistical discrimination, to applied deep learning, its central aim is to provide additional insight into the effectiveness of the Right to Counsel. \par 
+ In line with the recent Economic works on the topic, it does so by offering a partial assessment of the policy ``at scale''. This approach differs significantly from some of the prior randomized control trial studies where only a limited number of judges were involved as in \cite{greiner2012limits} or where only individuals who were thought to likely benefit from legal representation were provided with laywers from private firms working pro bono as in \cite{seron2001impact}.   
+
+In contrast to the recent Economic literature, though, this paper empirically considers the indirect effects of the policy, thereby complementing \cite{cassidy2022effects} which empirically focuses on the direct effects, and \cite{abramson2021welfare} which considers the indirect effects via a counterfactual exercise.
 
 \section{Policy Details}
 \subsection{Timeline}
@@ -134,11 +139,6 @@ and applying for assistance.''} Given that the lack of enforcement with respect 
 \end{figure}
 
 \subsection{Data \& Outcomes}
-\begin{itemize}
-    \item \cite{evans2019reducing}: rapid re-housing programs, which provide immediate
-temporary subsidies for market housing, have replaced many traditional programs for people experiencing
-somewhat less chronic situations of homelessness. 
-\end{itemize}
 As referenced prior, the outcome of interest is the search length for households who are currently experiencing homelessness but face limited barriers to housing. Rapid Re-housing, a federally tracked program, provides limited short term assistance to exactly this population. Its aim is to help ``families exit shelters and get back into permanent housing quickly.''\footnote{\textrm{Missing Source}} While different in nature than an independent housing search, the search length of individuals in a Rapid Rehousing program a reasonable proxy for the following three reasons. First, Rapid Rehousing programs ``serve people experiencing homelessness with no preconditions such as employment, income, absence of criminal record, or sobriety.''\footnote{\href{https://www.urban.org/sites/default/files/publication/99153/rapid_re-housings_role_in_responding_to_homelessness_3.pdf}{Reference}} Second, the program does not target people who might need long-term assistance. Those individuals and families are helped by permanent supportive housing programs.\footnote{Very different from permanent supportive housing which is as Rosanne Haggerty writes in the NyTimes, ``is ideal for those with serious health challenges who have been homeless for long periods of time''.\footnote{\href{https://www.nytimes.com/roomfordebate/2015/02/19/homes-for-the-homeless/for-even-the-neediest-housing-is-the-solution-to-homelessness}{NyTimes}}}\footnote{ \textbf{Cost}: at $\$6,678$ per family, it is cheaper than transitional housing at $\$32,557$ per family.\footnote{\href{https://cceh.org/provider-resources/rapid-rehousing/}{CCEH Video}}} Third, the lease agreement households sign come with ``the same rights and responsibilities as a typical lease holder.''\footnote{\href{thttps://endhomelessness.org/resource/rapid-re-housing-a-history-and-core-components/}{It} is imperative that any lease agreement provides the tenant with **the same rights and responsibilities as a typical lease holder** and that the financial terms of the lease are such that the household has a reasonable ability to assume rental costs once financial support ends (keeping in mind that in the majority of cases, even households with no income at move-in retain their housing)"}
 \begin{figure}[htbp]
 \centering
@@ -294,32 +294,61 @@ The natural extension to the difference-in-difference estimator such that it has
 \caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/examples/scripts/dml.py}{Reproduced Here}: The sampling distribution of a Double Machine Learning Based Neural Network Estimator under selection on observables. }
 \label{FIGURE LABEL}
 \end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
+A drawback of the above approach is that it makes no correction for the propensity score. 
+
+\begin{align*}
+    \beta _0 = \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
+\end{align*}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/framework/inner_loop_0.pdf}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
 
 \section{Toy Model}
-In order to clarify our estimand of interest, we write down the following model. The key detail is that we parameterize the constraint function with the Right to Counsel Policy. Everything else is rather standard in that we allow the parameters of the constraint and utility functions to differ across individuals, and define our estimand as the expected value take with respect to these the probability law induced by these random variables. \textbf{Notationally}, we denote the partial evaluation of a function by subscripting the function with the argument. 
+\subsection{Overview}
+In order to clarify our estimand of interest, we write down the following model. The key detail is that we parameterize the constraint function with the Right to Counsel Policy. Everything else is rather standard in that we allow the parameters of the constraint and utility functions to differ across individuals, and define our estimand as the expected value take with respect to these the probability law induced by these random variables. \textbf{Notationally}, we denote the partial evaluation of a function by subscripting the function with the argument.\par 
+\subsection{Model}
+We define an element of the choice set as a bundle of housing related features. Most relevant to our data set is the housing search length which we include as the first component. It's important to acknowledge that individuals may be substituting across a wide range of housing aspects including the quality of the house and the price among others features.\footnote{To introduce uncertainty into the model, we could augment each housing bundle with a stochastic process that captures the probability of remaining in the house across each time period. Note, this stochastic process would likely vary across individuals.}
 \begin{align*}
-\intertext{Choice Set}
-   &x := (\textrm{quality}, \textrm{price}, \textrm{search period}, \dots ) \in \mathcal{X}\\ 
-\intertext{Constraint Function}
-&F :: \textrm{Params} \to  \textrm{RTC} \to \mathcal{X} \to \{0, 1\} \\ 
-\intertext{Utility Function}
-&U :: \textrm{Params} \to \mathcal{X} \to \mathcal{R}_+ \\ 
-\intertext{Pre-Policy Problem}
-&\underset{x \in F_{p, 0}^{-1}(0)}{\textrm{maximize}} \ U_{\alpha} (x) \\ 
-\intertext{Implicit Function of Interest}
-& s^*(\textrm{rtc}, p, \alpha) := \underset{x \in F_{p, \textrm{rtc}}^{-1}(0)}{\textrm{argmax}_2} \ U_{\alpha} (x) \\ 
-\intertext{Estimand}
+    x := (\textrm{search period}, \textrm{quality}, \textrm{price}, \dots ) \in \mathcal{X}
+\end{align*}
+As indicated by its signature, we introduce a parameterized constraint function where we allow the parameters to vary across individuals. This constraint function not only incorporates the macroeconomic features of the housing market, but also the landlords actions/policies towards individual tenants.
+\begin{align*}
+   F :: \textrm{Params} \to  \textrm{RTC} \to \mathcal{X} \to \{0, 1\} 
+\end{align*}
+The uttility function then captures some (present discounted) value of each housing option. 
+\begin{align*}
+U :: \textrm{Params} \to \mathcal{X} \to \mathcal{R}_+ 
+\end{align*}
+With the essential components of the model defined, we can express the individual choice problem as follows. The following problem would model an individual not in a treated zip code or prior to the policy implementation as the second parameter of the constraint function takes the value $0$. The pre-image of $0$ under the constraint function defines the feasibility set. 
+\begin{align*}
+\underset{x \in F_{p, 0}^{-1}(0)}{\textrm{maximize}} \ U_{\alpha} (x)
+\end{align*}
+Via-this parameterized optimization problem, we can then define the implicit function of interest which captures the effects of the individual-level parameters and the policy on the search length. 
+\begin{align*}
+s^*(\textrm{rtc}, p, \alpha) := \underset{x \in F_{p, \textrm{rtc}}^{-1}(0)}{\textrm{argmax}_0} \ U_{\alpha} (x) \\ 
+\end{align*}
+As we are only interested in the later effects, we integrate over the individual-level parameters leading to the estimand defined below.
+\begin{align*}
 &\theta := \mathbb{E}[s^*(1, p, \alpha) - s^*(0,  p, \alpha)] \\
 &\quad = \int _{\Omega} s^*\big(1, p(\omega), \alpha(\omega)\big) - s^*\big(0, p(\omega), \alpha(\omega)\big)d\mathbb{P}
 \end{align*}
+
+ 
 
 
 
 
 \section{Empirical Strategy}
-In contrast to many applied microeconomic papers that assess the sensitivity of their results by varying the selection of the controls in their regression models, we follow the framework presented in our accompanying paper \href{https://github.com/pharringtonp19/rfp_paper/blob/main/Regularizing_the_Forward_Pass.pdf}{Regularizing the Forward Pass} which keeps the set of controls fixed and explores how the estimate varies as we expand the function space that we search over.\footnote{If you are familiar with our ongoing work, you will notice that we have not yet applied the full model in this paper. We plan to do so in the next iteration of the paper.}\par 
-
-
 The following notation defines the key variables used in the estimators defined below. 
 \begin{align*}
     &Y_i: \textrm{Acceptable Move-in Date} \mid \textrm{Search Duration}\\
@@ -331,10 +360,10 @@ The following notation defines the key variables used in the estimators defined 
 \textbf{Note}: Subscripts on the outcome corresponding to subsets of individuals who are observed in that corresponding time period. 
 
 \subsection{Difference-in-Difference}
-We fit the following difference-in-difference estimator. 
+We fit the following difference-in-difference estimator. In this specification and for the ones that follow, $Y_i$ is a binary variable that indicates whether the search length was less than some specified number of days. As we illustrate in figure \ref{fig:diff_mean}, the percentage point effect of the Right to Counsel (the y-axis) is relatively consistent as we vary the acceptable move-in-date threshold. 
 \begin{align*}
     \beta_0 &= \mathbb{E}[Y_1 -Y_0 \mid D=1] -  \mathbb{E}[Y_1 - Y_0 \mid D=0] \end{align*}
-    
+Importantly, when we restrict the sample to only high eviction zip codes in figure \ref{fig:diff_mean_high}, we see a relatively consistent negative effect on the probability of moving into housing by a certain date.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
@@ -347,14 +376,14 @@ We fit the following difference-in-difference estimator.
     \centering
     \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/diff_in_mean_True_False.pdf}
     \caption{High Eviction Zip Codes}
-    \label{SUBFIGURE LABEL 4}
+    \label{fig:diff_mean_high}
 \end{subfigure}
 \caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
-\label{FIGURE LABEL}
+\label{fig:diff_mean}
 \end{figure}
 
 \subsection{Difference-in-Difference with Controls}
-We then add individual level and zip code controls to the regression specification
+Adding individual level controls as well as zip code fixed effects makes a material difference for the magnitude of the effect but not the sign when we again restrict the sample to high eviction zip codes in figure \ref{fig:diff_control_high}.
 \begin{align*}
     Y_i &= \alpha _0 + \beta_0 \textrm{Post}_i \times \textrm{Treated}_i + \beta_1  \textrm{Post}_i + \beta_2 \textrm{Treated}_i \\ 
     &\quad + \beta _3X_i + \beta_4 Z_i + \varepsilon_i
@@ -363,18 +392,18 @@ We then add individual level and zip code controls to the regression specificati
 \centering
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_False.pdf}
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_False_False.pdf}
     \caption{All zip codes}
     \label{SUBFIGURE LABEL 3}
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_True.pdf}
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_True_False.pdf}
     \caption{High Eviction Zip Codes}
-    \label{SUBFIGURE LABEL 4}
+\label{fig:diff_control_high}
 \end{subfigure}
 \caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
-\label{FIGURE LABEL}
+\label{fig:diff_control}
 \end{figure}
 
 %\subsection{Partially Linear Difference-in-Difference}
@@ -398,40 +427,15 @@ We then add individual level and zip code controls to the regression specificati
 \caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/cluster_diff_n_diff.py}{Reproduced Here}: Confidence Bands formed sampling across random parameter initializations}
 \label{FIGURE LABEL}
 \end{figure}
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
-\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
-\label{FIGURE LABEL}
-\end{figure}
-A drawback of the above approach is that it makes no correction for the propensity score. 
-
-\begin{align*}
-    \beta _0 = \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
-\end{align*}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.5\linewidth]{figures/framework/inner_loop_0.pdf}
-\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
-\label{FIGURE LABEL}
-\end{figure}
 
 
 
-\section{Related Literature}
- While this paper certainly engages with various literatures, from statistical discrimination, to applied deep learning, its central aim is to provide additional insight into the effectiveness of the Right to Counsel. \par 
- In line with the recent Economic works on the topic, it does so by offering a partial assessment of the policy ``at scale''. This approach differs significantly from some of the prior randomized control trial studies where only a limited number of judges were involved as in \cite{greiner2012limits} or where only individuals who were thought to likely benefit from legal representation were provided with laywers from private firms working pro bono as in \cite{seron2001impact}.   
-
-In contrast to the recent Economic literature, though, this paper empirically considers the indirect effects of the policy, thereby complementing \cite{cassidy2022effects} which empirically focuses on the direct effects, and \cite{abramson2021welfare} which considers the indirect effects via a counterfactual exercise.
+ 
 \section{Conclusion}
-\begin{itemize}
-    \item \cite{evans2019reducing}: ``Direct federal
-funding for local organizations to combat homelessness totals about \$6.1 billion annually (USICH 2018)''
-\end{itemize}
 As a general statement, Economists are interested in understanding the effects of policies at scale. Almost by definition, though, these effects are not well identified.\footnote{The example of cross-country regression highlights this lack of identification} Therefore, the aim is often to capture a particular effect of the policy as it's in the process of being deployed at scale with the hope that this intermediate measurement might be informative about the effects of the policy under the new equilibrium.\par 
-In this paper, where we're interested in studying the effects of the Right to Counsel at scale, we take as our intermediate measurement the length of the housing search process for low-income individuals. The thinking being that if there are adverse effects of this policy, that is, if landlords decide to reoptimize in response to the implicit higher eviction costs that the Right to Counsel places on them, we would see it via the housing search channel. \par 
-And indeed, while extremely preliminary, we see some indication that there may be adverse effects along this channel. While noisy the estimates suggest that the policy may make it more difficult on average to find housing and in particular for African American women. We caution, though, that our results are preliminary. 
+In this paper, where we're interested in studying the effects of the Right to Counsel at scale, we take as our intermediate measurement the length of the housing search process for low-income individuals. As explained in the paper, this is a far from perfect or comprehensive outcomes variable. We regard it a suggestive signal in the sense that if there are adverse effects of the policy -- if landlords decide to re-optimize in response to the Right to Counsel -- we would see it via the housing search channel. \par 
+
+And indeed, while extremely preliminary, we see some indication that there may be adverse effects along this channel. We caution, though, that our results are preliminary.  
 
 %\bibliographystyle{plainnat}
 \bibliography{bibliography.bib}
