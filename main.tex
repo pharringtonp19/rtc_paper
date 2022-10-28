@@ -59,7 +59,7 @@
 \thispagestyle{empty} % makes the title page number not appear
 \vspace{-2em}
 \begin{abstract}
-Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a simple and unified structure that generalizes ordinary least squares, allows for nonparametric cluster effects, and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Complimenting the existing Economic Literature on the topic, we consider the extent to which the policy makes it harder for low-income individuals to find housing. As some have suggested, if the Right to Counsel increases the cost of evicting a tenant, landlords might respond by making it more difficult to rent a unit in the first place. Exploiting the staggered roll-out of the policy across the state of Connecticut, our preliminary results suggest that certain subsets of the population may be adversely affected by the policy. 
+Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a simple and unified structure that generalizes ordinary least squares, allows for nonparametric cluster effects,\footnote{To elaborate on this point, indivduals in the data are grouped together in some fashion. In our context, this grouping is done via a shared zip code. We indicate this grouping via an indicator variable. The nonparametric component is that we allow these the effect of this group memebership on the outcome of interest to vary across the other controls/features. That is, we don't place a functional form assumption on the way the cluster indicator variable interacts with the other controls.} and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Complimenting the existing Economic Literature on the topic, we consider the extent to which the policy makes it harder for low-income individuals to find housing. As some have suggested, if the Right to Counsel increases the cost of evicting a tenant, landlords might respond by making it more difficult to rent a unit in the first place. Exploiting the staggered roll-out of the policy across the state of Connecticut, our preliminary results suggest that on average, housing is harder to secure. 
 \vspace{0.2in}\\
 \noindent\textbf{Keywords:} Right to Counsel, Evictions, Deep Learning\\
 %\noindent\textbf{JEL Codes:} key1, key2, key3\\
@@ -73,14 +73,14 @@ Drawing from the Deep Learning Literature and in the language of Category Theory
 
 
 %\oneandhalfspacing
-\section{Introduction}
+\subsection*{The Policy}
 In this paper, the term \textit{The Right to Counsel} refers to a policy initiative which ensures that tenants have access to free legal representation in eviction cases. Unlike criminal cases in the U.S., defendants in an eviction case are not provided with a public attorney. Currently, a gap in legal representation exists between landlords and tenants which \cite{collinson2022eviction} has documented to be as large as $95\%-1\%$ in some areas in favor of the landlord.
-\subsection{Background \& Motivation}
-The 2 million evictions that occur each year across the United States are costly to individuals, landlords, courts, and the general public.\footnote{Eviction number from \cite{gromis2022estimating}. (Individual Costs): \cite{collinson2022eviction} writes, ``We find that eviction causes significant disruptions that are reflected in increases in residential mobility, homelessness, and hospital use''. (Court Costs): As \cite{seron2001impact} notes, legal representation actually might decrease housing court costs as the number of appearances and post judgement motions decline. (General Public): As \cite{desmond2019unaffordable} writes, ``Residential instability often brings about other forms of instability—in families, schools, communities— compromising the life chances of adults and children''} Given the severity of these costs, the multitude of factors which contribute to an eviction filling, and the typical manner in which eviction cases are settled, many in the U.S. believe that free legal counsel should be provided to households facing eviction.\footnote{(Multitude of Causes):  David Ehrens writes in his \href{https://dartmouth.theweektoday.com/article/opinion-support-right-counsel-renters/58185}{letter} to the editor of \href{https://dartmouth.theweektoday.com/}{Dartmouth Week} of ``evictions related to the pandemic, chronic housing supply shortages, inequities in lending, generational poverty, and other harms''. (Eviction Proceedings): \textcolor{blue}{Missing Reference} writes ``the vast majority resolved by default or settlement, typically the result of hallway negotiation'' (Growing Interest): \cite{engler2010connecting} writes ``a renewed call for a civil right to counsel, or civil Gideon, has gained momentum \dots as well as a surge in membership in the newly-created National Coalition for a Civil Right to Counsel.''} And indeed, over the past five years, $15$ cities and $3$ states have acted on this belief, initiating a Right to Counsel in some form for low-income households, with additional localities starting pilot studies in the hope of closing the gap in legal representation and improving outcomes. \par 
-To some extent, this hope has been empirically justified when looking at the direct legal outcomes of eviction cases. Both in the context of small scale randomized control trials as well as in city-wide roll-outs, researchers have generally found weakly positive to positive results with \cite{seron2001impact}  writing that ``Represented tenants are much less likely to have a final judgment and order of eviction against them'' and \cite{cassidy2022effects} reporting that ``Tenants with lawyers are considerably less likely to be subject to possessory judgments.''\footnote{\cite{greiner2012limits} examines the outcomes of two small scale, Massachusetts based, randomized control trials and finds a measurable impact of legal representation in only one of the trials.} \par 
-The concern, though, is that the indirect effects of the policy might greatly diminish or possibly outweigh these positive legal outcomes. Specifically, the concern is that landlords might respond to the policy by making it harder for low-income households to find housing in the first place. As \cite{gunn1995eviction} writes, ``By increasing landlords' costs of doing business, legal services attorneys may enrich their clients at the expense of all other similarly situated poor tenants". And indeed this increased cost is one of the most consistent findings across the literature as legal services have been shown to increase the duration of eviction proceedings.\footnote{For example, in reference to the duration of eviction proceedings in New York City,  \cite{cassidy2022effects} writes that: ``The number of days between a case filing and a judgment is also significantly longer in the UA zip codes after program implementation.''} The open policy question, then, is the extent to which landlords pass on these perceived costs, and whether these costs are shifted to those who are least able to bear them.\footnote{A lawyer who specializes in evictions wrote via email that `The thing to remember is that higher costs for landlords always get passed on to the tenants in some form (higher rent, deposits, fees, etc.), or the property gets sold, thereby reducing inventory and resulting in higher rents.''} Up to this point, there has been little to no empirical work on this question. \par 
-\subsection{Data Approach}
-In order to motivate the specific approach of this paper, it is important to highlight why the above concern remains an open question. There are two closely related reasons for this. The first is that the data required to make an empirical assessment of the Right to Counsel at scale is relatively new. As recently as last year, the most attractive approach to answering this research question was via a counterfactual analysis as in \cite{abramson2021welfare}. The second reason is that the adverse effects of the Right to Counsel are likely difficult to measure. Given the informal nature of evictions, -- Mathew Desmond suggests in his New York Times Best Seller, \textit{Evicted}(\cite{desmond2016evicted}), that informal evictions account for $48\%$ of forced moves while formal evictions account for $24\%$ -- landlord's response to the policy may be hard to detect using conventional data sets. For example, landlords might respond by asking for a higher security deposits, requiring additional months of rent upfront or increasing screening standards. \par 
+
+\section{Introduction}
+The 2 million evictions that occur each year across the United States are costly to individuals, landlords, courts, and the general public. Given the severity of these costs, the multitude of factors which contribute to an eviction filling, and the typical manner in which eviction cases are settled, many in the U.S. believe that free legal counsel should be provided to households facing eviction. And indeed, over the past five years, $15$ cities and $3$ states have acted on this belief, initiating a Right to Counsel in some form for low-income households, with additional localities starting pilot studies in the hope of closing the gap in legal representation and improving outcomes. \par 
+To some extent, this hope has been empirically justified when considering the direct outcomes of eviction cases. Both in the context of small scale randomized control trials as well as in city-wide roll-outs, researchers have generally found positive results with \cite{seron2001impact}  writing that ``Represented tenants are much less likely to have a final judgment and order of eviction against them'' and \cite{cassidy2022effects} reporting that ``Tenants with lawyers are considerably less likely to be subject to possessory judgments.''\footnote{\cite{greiner2012limits} examines the outcomes of two small scale, Massachusetts based, randomized control trials and finds a measurable impact of legal representation in only one of the trials.} \par 
+The concern, though, is that the indirect effects of the policy might diminish or possibly outweigh these positive legal outcomes. Specifically, the concern is that landlords might respond to the policy by making it harder for low-income households to find housing in the first place. As \cite{gunn1995eviction} writes, ``By increasing landlords' costs of doing business, legal services attorneys may enrich their clients at the expense of all other similarly situated poor tenants." And indeed the increase in costs is one of the most consistent findings across the literature as legal services have been shown to increase the duration of eviction proceedings.\footnote{For example, in reference to the duration of eviction proceedings in New York City,  \cite{cassidy2022effects} writes that: ``The number of days between a case filing and a judgment is also significantly longer in the UA zip codes after program implementation.''} The open policy question, then, is the extent to which landlords pass on these perceived costs, and whether these costs are shifted to those who are least able to bear them.\footnote{A lawyer who specializes in evictions wrote via email that `The thing to remember is that higher costs for landlords always get passed on to the tenants in some form (higher rent, deposits, fees, etc.), or the property gets sold, thereby reducing inventory and resulting in higher rents.''} Up to this point, there has been little to no empirical work on this question. \par 
+There are two distinct reasons for why up to this point, the above remains an open question. The first is that as \cite{abramson2021welfare} writes, there hasn't been a suitable context to empirically assess the effects at scale. Many of the city wide-roll of the policy overlapped with the eviction moratorium. Only within the past year, as Washington and Connecticut have adopted the policy at the state level has the possibility of estimating the effects at scale become feasible.The second reason is that the adverse effects of the Right to Counsel are likely difficult to measure. Given the informal nature of evictions, -- Mathew Desmond suggests in his New York Times Best Seller, \textit{Evicted}(\cite{desmond2016evicted}), that informal evictions account for $48\%$ of forced moves while formal evictions account for $24\%$ -- landlord's response to the policy may be hard to detect using conventional data sets. For example, landlords might respond by asking for a higher security deposits, requiring additional months of rent upfront or increasing screening standards. \par 
 This paper takes a ``noisy'' first step towards addressing both of these issues. First, it exploits the ongoing rollout of the policy across the state of Connecticut where, due to supply constraints of legal services, only low-income individuals in certain zip codes currently receive free legal aid. Second it makes use of data from the U.S. Department of Housing and Urban Development which measures both the characteristics of individuals experiencing homelessness (race, gender, family structure) as well as their length of their housing search. Importantly, this data set is restricted to households who don't face significant barriers to housing. That is, households who are thought to require only limited and partial support. The search length of these households is arguably a key outcome variable for policy makers. \par 
 \subsection{Econometric Framework}
 A central challenge with the data in this context, as in the case of many policy evaluation papers, is that treatment is assigned at a level above the unit of interest. Specifically, treatment is assinged at the zip code level, while observations are at the individual level. To account for this issue in a nonparametric mannor, this paper builds off the deep learning papers of (\cite{finn2017model} and \cite{kelly2020learning}) by introducing a conceptually simple way to adjust one's estimator for the presence of clustered data as well as to flexibly control the hypothesis space of the model. The model is further explained in section \ref{sec:framework}, but the essential ideas can be understood with a minimal amount of detail. 
@@ -90,11 +90,26 @@ like most deep learning based models, the estimator can be thought of as the com
 \input{eqns/rfp}
  
 \subsection{Heterogeneity}
-Lastly, while no pre-analysis plan accompanies this paper, the only source of heterogeneity explored is the effects of the policy on Black and female tenants. As well documented in the eviction literature, these subgroups share the greatest likelihood and costs of evictions, as \cite{desmond2019unaffordable} writes, ``Low-income women, especially poor black women, are at high risk of eviction'', and \cite{collinson2022eviction} notes that with regards to the costs of evictions, ``We find particularly sharp negative impacts for female and Black tenants,\footnote{\cite{evans2019reducing} writes `} who drive the effects on labor market outcomes, residential mobility, and interactions with homelessness.'' It seems likely, therefore, that if landlords respond in an adverse way to The Right to Counsel, it would be be towards this sub-population in particular. Hence, all regression specifications are fit both over the entire sample and this sub-sample of interest.
+Lastly, while no pre-analysis plan accompanies this paper, the only source of heterogeneity explored is the effects of the policy on Black and female tenants. As well documented in the eviction literature, these subgroups share the greatest likelihood and costs of evictions, as \cite{desmond2019unaffordable} writes, ``Low-income women, especially poor black women, are at high risk of eviction'', and \cite{collinson2022eviction} notes that with regards to the costs of evictions, ``We find particularly sharp negative impacts for female and Black tenants,\footnote{\cite{evans2019reducing} writes `} who drive the effects on labor market outcomes, residential mobility, and interactions with homelessness.'' It seems likely, therefore, that if landlords respond in an adverse way to The Right to Counsel, it would be be towards this sub-population in particular. Hence, all regression specifications are fit both over the entire sample and this sub-sample of interest. 
+\subsection{Literature Review}
+\begin{itemize}
+    \item Not all areas have experienced a decline in homelessness. The trends in New York City (CoC NY600) and Los Angeles County7 have been particularly different from the rest of the country. In Figure 3, the solid lines report homelessness rates (x 100,000) for Los Angeles County and New York City (right vertical
+axis). Note that since 2012, these rates have increased by 57 and 31 percent, respectively
+\end{itemize}
 While this paper certainly engages with various literatures, from statistical discrimination, to applied deep learning, its central aim is to provide additional insight into the effectiveness of the Right to Counsel. \par 
  In line with the recent Economic works on the topic, it does so by offering a partial assessment of the policy ``at scale''. This approach differs significantly from some of the prior randomized control trial studies where only a limited number of judges were involved as in \cite{greiner2012limits} or where only individuals who were thought to likely benefit from legal representation were provided with laywers from private firms working pro bono as in \cite{seron2001impact}.   
 
 In contrast to the recent Economic literature, though, this paper empirically considers the indirect effects of the policy, thereby complementing \cite{cassidy2022effects} which empirically focuses on the direct effects, and \cite{abramson2021welfare} which considers the indirect effects via a counterfactual exercise.
+
+
+The recent events of Covid-19 and rising inflation have magnified the importance and fragility of housing for low-income individuals. In response to this, we empirically assess the effectiveness of an initiative, growing in popularity across the U.S., known as the Right to Counsel (RTC). Currently adopted in 15 cities and 3 states, the initiative aims to combat the 3.6 million eviction fillings that occur each year in the U.S. by closing the gap in legal representation between landlord and tenant. Closing such a gap entails providing legal representation for tenants which as the case of Boston in 2019 which saw 39,594 eviction cases filed only  with only $8.7\%$ of tenants represented.\footnote{(\href{https://bostonbar.org/app/uploads/2022/06/rtc-report-for-web-or-email.pdf}{Samuelson et a. [2020]})}
+
+ Complimenting both the small, but growing Economic literature on this topic (\cite{abramson2021welfare}, \cite{cassidy2022effects}) and earlier studies based on small scale randomized control trials (\cite{seron2001impact}), we consider the indirect effects of the Right to Counsel policy. Exploiting the recent staggered roll-out across Connecticut, we consider the extent to which the policy may actually increase housing instability by making it harder for those currently unhoused to find permanent housing. As some have suggested, if the policy increases the cost of evicting a tenant,\footnote{Indeed one of the most consistent findings across the literature is the increase in processing time: \cite{cassidy2022effects} writes: ``The number of days between a case filing and a judgment is also significantly longer in the UA zip codes after program implementation.''} landlords might respond by making it harder for low-income individuals to rent a unit in the first place.\footnote{This idea has been emphasized both in the academic literature as as \cite{gunn1995eviction} writes, ``By increasing landlords' costs of doing business, legal services attorneys may enrich their clients at the expense of all other similarly situated poor tenants."  and in personal conversations with lawyers who specialize in evictions: ``The thing to remember is that higher costs for landlords always get passed on to the tenants in some form (higher rent, deposits, fees, etc.), or the property gets sold, thereby reducing inventory and resulting in higher rents.''}
+
+Using individual level data from the U.S. Department of Housing and Urban Development, and fitting a variety of estimators to the data, from difference-in-means to machine learning based estimators, our preliminary estimates suggest while the policy has no noticeable effects on for the average individuals, it may make it more difficult for African American women to find permanent housing. The estimate, while crude and preliminary, maintains a positive sign above $5$ percentage points both across regression specifications as well as across subsets of zip codes. 
+Eviction number from \cite{gromis2022estimating}. (Individual Costs): \cite{collinson2022eviction} writes, ``We find that eviction causes significant disruptions that are reflected in increases in residential mobility, homelessness, and hospital use''. (Court Costs): As \cite{seron2001impact} notes, legal representation actually might decrease housing court costs as the number of appearances and post judgement motions decline. (General Public): As \cite{desmond2019unaffordable} writes, ``Residential instability often brings about other forms of instability—in families, schools, communities— compromising the life chances of adults and children''
+
+(Multitude of Causes):  David Ehrens writes in his \href{https://dartmouth.theweektoday.com/article/opinion-support-right-counsel-renters/58185}{letter} to the editor of \href{https://dartmouth.theweektoday.com/}{Dartmouth Week} of ``evictions related to the pandemic, chronic housing supply shortages, inequities in lending, generational poverty, and other harms''. (Eviction Proceedings): \textcolor{blue}{Missing Reference} writes ``the vast majority resolved by default or settlement, typically the result of hallway negotiation'' (Growing Interest): \cite{engler2010connecting} writes ``a renewed call for a civil right to counsel, or civil Gideon, has gained momentum \dots as well as a surge in membership in the newly-created National Coalition for a Civil Right to Counsel.''
 
 \section{Policy Details}
 \subsection{Timeline}
@@ -139,7 +154,14 @@ and applying for assistance.''} Given that the lack of enforcement with respect 
 \end{figure}
 
 \subsection{Data \& Outcomes}
-As referenced prior, the outcome of interest is the search length for households who are currently experiencing homelessness but face limited barriers to housing. Rapid Re-housing, a federally tracked program, provides limited short term assistance to exactly this population. Its aim is to help ``families exit shelters and get back into permanent housing quickly.''\footnote{\textrm{Missing Source}} While different in nature than an independent housing search, the search length of individuals in a Rapid Rehousing program a reasonable proxy for the following three reasons. First, Rapid Rehousing programs ``serve people experiencing homelessness with no preconditions such as employment, income, absence of criminal record, or sobriety.''\footnote{\href{https://www.urban.org/sites/default/files/publication/99153/rapid_re-housings_role_in_responding_to_homelessness_3.pdf}{Reference}} Second, the program does not target people who might need long-term assistance. Those individuals and families are helped by permanent supportive housing programs.\footnote{Very different from permanent supportive housing which is as Rosanne Haggerty writes in the NyTimes, ``is ideal for those with serious health challenges who have been homeless for long periods of time''.\footnote{\href{https://www.nytimes.com/roomfordebate/2015/02/19/homes-for-the-homeless/for-even-the-neediest-housing-is-the-solution-to-homelessness}{NyTimes}}}\footnote{ \textbf{Cost}: at $\$6,678$ per family, it is cheaper than transitional housing at $\$32,557$ per family.\footnote{\href{https://cceh.org/provider-resources/rapid-rehousing/}{CCEH Video}}} Third, the lease agreement households sign come with ``the same rights and responsibilities as a typical lease holder.''\footnote{\href{thttps://endhomelessness.org/resource/rapid-re-housing-a-history-and-core-components/}{It} is imperative that any lease agreement provides the tenant with **the same rights and responsibilities as a typical lease holder** and that the financial terms of the lease are such that the household has a reasonable ability to assume rental costs once financial support ends (keeping in mind that in the majority of cases, even households with no income at move-in retain their housing)"}
+As referenced prior, the outcome of interest is the search length for households who are currently experiencing homelessness but face limited barriers to housing. Rapid Re-housing, a federally tracked program, provides limited short term assistance to exactly this population.\footnote{As \cite{evans2019reducing} explains, ``The
+Homeless Management Information System (HMIS) is a nationwide network of local IT systems that collect
+client-level data for people entering sheltered services. These systems are organized at the CoC level and most
+homeless shelters across the country are part of the HMIS system''} Its aim is to help ``families exit shelters and get back into permanent housing quickly.''\footnote{\textrm{Missing Source}} While different in nature than an independent housing search, the search length of individuals in a Rapid Rehousing program a reasonable proxy for the following three reasons. First, Rapid Rehousing programs ``serve people experiencing homelessness with no preconditions such as employment, income, absence of criminal record, or sobriety.''\footnote{\href{https://www.urban.org/sites/default/files/publication/99153/rapid_re-housings_role_in_responding_to_homelessness_3.pdf}{Reference}} Second, the program does not target people who might need long-term assistance. Those individuals and families are helped by permanent supportive housing programs.\footnote{Very different from permanent supportive housing which is as Rosanne Haggerty writes in the NyTimes, ``is ideal for those with serious health challenges who have been homeless for long periods of time''.\footnote{\href{https://www.nytimes.com/roomfordebate/2015/02/19/homes-for-the-homeless/for-even-the-neediest-housing-is-the-solution-to-homelessness}{NyTimes}}}\footnote{ \textbf{Cost}: at $\$6,678$ per family, it is cheaper than transitional housing at $\$32,557$ per family.\footnote{\href{https://cceh.org/provider-resources/rapid-rehousing/}{CCEH Video}}} Third, the lease agreement households sign come with ``the same rights and responsibilities as a typical lease holder.''\footnote{\href{thttps://endhomelessness.org/resource/rapid-re-housing-a-history-and-core-components/}{It} is imperative that any lease agreement provides the tenant with **the same rights and responsibilities as a typical lease holder** and that the financial terms of the lease are such that the household has a reasonable ability to assume rental costs once financial support ends (keeping in mind that in the majority of cases, even households with no income at move-in retain their housing)"}
+\begin{itemize}
+    \item \cite{evans2019reducing}: The Family Options Study provides the primary experimental test of the effectiveness of rapid rehousing (RRH), but the results for this treatment arm are mixed. There were no statistically significant
+differences in housing outcomes between the control and short-term subsidy group by the three-year followup. (Gubits et al. 2016).
+\end{itemize}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/rtc/context/rrh_counts.pdf}
@@ -262,56 +284,6 @@ We illustrate the relative importance of our design choices in figure \ref{fig:m
 \label{fig:mamlablation}
 \end{figure}
 
-\subsection{Parametric Estimation}
-What may not be clear from the above presentation is why this approach is useful for estimating finite parameters of interest. The thinking being that linear regression already partial out the cluster effect. In this context, though, when treatment varies at the level of the cluster, a cross-section regression with cluster level fixed effects 
-
-As suggested by the explicit functional form, the above estimator doesn't have a non-parametric analogue which may make the interpretation suspect or difficult to some.\footnote{To be clear about this point, it's not obvious how to interpret the coefficient of interest as the result of regression residuals on residuals in the spirit of via Frisch-Waugh-Lovell. That is, the estimator does not have the following nonparametric equivalent: 
-\begin{align*}
-    Y_i - f_{\theta _1}(Y_i) = \beta_0 (D_i-f_{\theta _2}(D_i)) + \varepsilon_i
-\end{align*}}
-The natural extension to the difference-in-difference estimator such that it has a Frisch-Waugh-Lovell type of interpretation is the following model where we approximate the conditional expectations via neural network-based estimators.
-
-\begin{itemize}
-  \item In the post period, $\mathbb{P}_X,\mathbb{P}_{Y|X}$ might differ because of time and because of the policy
-\end{itemize}
-\begin{align*}
-    Y_{1} - \mathbb{E}[Y_{0} | X_i] &= \beta _0 \big(D_i - \mathbb{E}[D_1 | X_1]\big) + \varepsilon_i
-\end{align*}
-\begin{figure}[htbp]
-\centering
-\begin{subfigure}{.48\textwidth}
-    \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/dml_True.png}
-    \caption{Original Paper}
-    %\label{SUBFIGURE LABEL 3}
-\end{subfigure}
-\begin{subfigure}{.48\textwidth}
-    \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/dml_False.png}
-        \caption{Nonuniform Propensity Score}
-    %\label{SUBFIGURE LABEL 4}
-\end{subfigure}
-\caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/examples/scripts/dml.py}{Reproduced Here}: The sampling distribution of a Double Machine Learning Based Neural Network Estimator under selection on observables. }
-\label{FIGURE LABEL}
-\end{figure}
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
-\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
-\label{FIGURE LABEL}
-\end{figure}
-A drawback of the above approach is that it makes no correction for the propensity score. 
-
-\begin{align*}
-    \beta _0 = \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
-\end{align*}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.5\linewidth]{figures/framework/inner_loop_0.pdf}
-\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
-\label{FIGURE LABEL}
-\end{figure}
 
 \section{Toy Model}
 \subsection{Overview}
@@ -351,8 +323,8 @@ As we are only interested in the later effects, we integrate over the individual
 \section{Empirical Strategy}
 The following notation defines the key variables used in the estimators defined below. 
 \begin{align*}
-    &Y_i: \textrm{Acceptable Move-in Date} \mid \textrm{Search Duration}\\
-    &X_i: \textrm{Primary Controls: Age, Gender, Race, Family Size}\\ 
+    &Y_i:  \textrm{Search Duration}\\
+    &X_i: \textrm{Age, Gender, Race, Family Size}\\ 
     %&P_i: \textrm{Rapid Rehousing Provider}\\ 
     &Z_i: \textrm{Zip Code} \\
     &D_i: \textrm{Treated Zip Code}
@@ -409,6 +381,39 @@ Adding individual level controls as well as zip code fixed effects makes a mater
 %\subsection{Partially Linear Difference-in-Difference}
 
 \subsection{Regularizing the Forward Pass}
+It's possible to re-write the difference-in-difference model with controls as a linear version of the following estimator. Doing to we see that there are two potential concerns. The first is that the model fails to correct for the propensity score which as highlighted in figure \ref{fig:DML} can be problematic in certain contexts.  
+
+\begin{align*}
+\tilde{Y}_i - \mathbb{E}[ \tilde{Y}_i | X_i] = \beta_0 \big(D_i - \mathbb{E}[D_i |X_i]\big) + \varepsilon_i, \quad \textrm{where} \ \tilde{Y}_i =  Y_{1i} - Y_{0i} 
+\end{align*}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_True.png}
+    \caption{Original Paper}
+    %\label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_False.png}
+        \caption{Nonuniform Propensity Score}
+    %\label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/examples/scripts/dml.py}{Reproduced Here}: The sampling distribution of a Double Machine Learning Based Neural Network Estimator under selection on observables. In (a), we replicate the results of the original paper where the authors assume a constant treatment effect. Under a non-constant treatment effect as captured in (b), a failure to correct for the propensity score can introduce bias.}
+\label{fig:DML}
+\end{figure}
+The natural correction is to then deploy a fully-nonparametric model. 
+\begin{align*}
+\beta_0 := \int \mathbb{E}[\tilde{Y}_i | X_i, D_i=1] - \mathbb{E}[\tilde{Y}_i | X_i, D_i=0] d\mathbb{P}_X
+\end{align*}
+As previously illustrated, though, when treatment varies at the cluster level such estimators are susceptible to the tragic triad. We therefore implicitly partiall out the cluster effects by fitting these conditional expectations using our regularized forward pass framework which generates the results captured in figure \ref{fig:rfp_results}. Note, in order to limit the computation burden of these models we fit the following model. The only difference is that it removes the first step of estimating $\tilde{Y}$. 
+
+\begin{align*}
+    \beta _0 := \int d\mathbb{P}_X\Big(\big(\mathbb{E}[Y_1 |X,D=1] - \mathbb{E}[Y_0 |X,D=1]\big) -  \big(\mathbb{E}[Y_1 |X,D=0] - \mathbb{E}[Y_0 |X,D=0]\big)\Big)
+\end{align*}
+
 
 \begin{figure}[htbp]
 \centering
@@ -425,22 +430,34 @@ Adding individual level controls as well as zip code fixed effects makes a mater
     \label{SUBFIGURE LABEL 4}
 \end{subfigure}
 \caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/cluster_diff_n_diff.py}{Reproduced Here}: Confidence Bands formed sampling across random parameter initializations}
-\label{FIGURE LABEL}
+\label{fig:rfp_results}
 \end{figure}
+While the magnitude of the effect shrinks, the sign of the effect is relatively constant and negative when restricting the sample to high eviction zip codes. We also note that the difference in the estimated effects when considering the all zip codes and only high eviction zip codes decrease. \par 
+Over a long time frame, it would be interesting to assess whether the tail of the distribution increased. As \cite{evans2019reducing} notes in summaring previous homelessness related work, the costs are often associated with those in the tail.\footnote{\cite{evans2019reducing} notes that In Spellman et al. (2010), the costliest 10 percent of people incur up to 83 percent of the total costs of shelter
+during homelessness. In Flaming et al. (2015), individuals with costs in the top 5 percent of the public costs
+incur 47 percent of all costs. Hence, whether a program targets the costliest cases matters significantly for the
+mean costs reported above.''}
+
 
 
 
  
 \section{Conclusion}
-As a general statement, Economists are interested in understanding the effects of policies at scale. Almost by definition, though, these effects are not well identified.\footnote{The example of cross-country regression highlights this lack of identification} Therefore, the aim is often to capture a particular effect of the policy as it's in the process of being deployed at scale with the hope that this intermediate measurement might be informative about the effects of the policy under the new equilibrium.\par 
-In this paper, where we're interested in studying the effects of the Right to Counsel at scale, we take as our intermediate measurement the length of the housing search process for low-income individuals. As explained in the paper, this is a far from perfect or comprehensive outcomes variable. We regard it a suggestive signal in the sense that if there are adverse effects of the policy -- if landlords decide to re-optimize in response to the Right to Counsel -- we would see it via the housing search channel. \par 
-
-And indeed, while extremely preliminary, we see some indication that there may be adverse effects along this channel. We caution, though, that our results are preliminary.  
+As a general statement, Economists are interested in understanding the effects of policies at scale. Almost by definition, though, these effects are not well identified. The aim, therefore, is to capture a particular effect of the policy as it's in the process of being deployed with the hope that this intermediate measurement might be informative about the effect under the new equilibrium.\par 
+In this paper, we take as our intermediate measurement the housing search length for low-income individuals. As explained in the body of the paper, this is a far from perfect or comprehensive outcomes variable. That said, we regard as a meaningful signal in the sense that if there are adverse effects of the policy -- if landlords decide to re-optimize in an adverse fashion in response to the Right to Counsel -- we would likely see it via the housing search channel. \par 
+And indeed, while extremely preliminary, we see some indication that there may be adverse effects along this channel. Across a series of estimators, each of which fits within a general empirical estimation structure of ``Regularizing the Forward Pass'' which we introduce in this paper, we see that search length increases.
 
 %\bibliographystyle{plainnat}
 \bibliography{bibliography.bib}
 
 \section{Appendix}
+\subsection{Context Plots}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/rtc/results/cceh/cluster_dist_False_False.pdf}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
 \subsection{High-Level Overview of Model}
 \begin{align*}
 \intertext{Test}
@@ -511,5 +528,13 @@ This structure highlights that the key design choice is the fmap (how do you exp
 \caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/method/time_train_plot.py}{Reproduced Here}}
 \label{FIGURE LABEL}
 \end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/framework/inner_loop_0.pdf}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}}
+\label{FIGURE LABEL}
+\end{figure}
+
 \end{document} 
 
