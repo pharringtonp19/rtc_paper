@@ -60,7 +60,7 @@
 \thispagestyle{empty} % makes the title page number not appear
 \vspace{-2em}
 \begin{abstract}
-Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a unified estimation framework that generalizes ordinary least squares, allows for nonparametric cluster effects,\footnote{To elaborate on this point, indivduals in the data are grouped together in some fashion. In our context, this grouping is done via a shared zip code. We indicate this grouping via an indicator variable. The nonparametric component is that we allow these the effect of this group memebership on the outcome of interest to vary across the other controls/features. That is, we don't place a functional form assumption on the way the cluster indicator variable interacts with the other controls.} and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Specifically, we consider the extent to which the policy increases housing instability by making it harder for low-income households to secure housing in the first place. Exploiting the ongoing roll-out of the policy across the state of Connecticut, our preliminary results suggest that housing is harder to secure in areas with higher eviction rates, which suggests  that the policy is less effective at scale than previously understood. 
+Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a unified estimation framework that generalizes ordinary least squares, allows for nonparametric cluster effects,\footnote{To elaborate on this point, indivduals in the data are grouped together in some fashion. In our context, this grouping is done via a shared zip code. We indicate this grouping via an indicator variable. The nonparametric component is that we allow these the effect of this group memebership on the outcome of interest to vary across the other controls/features. That is, we don't place a functional form assumption on the way the cluster indicator variable interacts with the other controls.} and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Specifically, we consider the extent to which the policy increases housing instability by making it harder for low-income households to secure housing in the first place. Exploiting the ongoing roll-out of the policy across the state of Connecticut, our preliminary results suggest that housing is harder to secure in areas with higher eviction rates, suggesting that perhaps the policy is less effective at scale than generally understood. 
 \vspace{0.2in}\\
 \noindent\textbf{Keywords:} Right to Counsel, Evictions, Deep Learning\\
 %\noindent\textbf{JEL Codes:} key1, key2, key3\\
@@ -139,45 +139,28 @@ The remained of the paper is organized as follows. Section 2 describes the essen
  
 
 
-\section{Policy Details}
+\section{Background \& Policy Details}
+\subsection{Evictions}
+\begin{itemize}
+    \item Grace Period
+    \item Serve notice to quit
+    \item Summons \& Complaints 
+    \item Judgement \& Resitution (Control of property is returned to the landlord 
+\end{itemize}
+
 \subsection{Implementation}
-Signed in June of 2021 by Governor Lamont, the Right to Counsel came into effect on January 31, 2022, as rental relief services in response to Covid-19 we're coming to an end.
+Signed in June of 2021 by Governor Lamont, the Right to Counsel went into effect on January 31, 2022, as rental relief services in response to Covid-19 we're coming to an end, well after the expiration of the CDC's eviction moratorium for nonpayment of rent (August 26, 2021). Because the expected demand for legal services under the Right to Counsel exceed the level of legal support, state representatives rolled out the policy in phases.  In the first stage, the policy was made available to a subset of the zip codes (the 14 shown in yellow) in figure \ref{fig:treated_areas} which make up $30\%$ of evictions and $20\%$ percent of the renter population (Connecticut Bar Foundation). The expectation was that 2,000 households would receive legal aid in the first phase out of the 20,000 households expected. Individuals and families within these zip codes who made $80\%$ or less than the area median income were eligible (\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{Reference}).
 \par 
 \begin{figure}[htbp]
 \centering
     \centering
-    \includegraphics[width=.60\linewidth]{figures/rtc/context/timeline.png}
-    %\caption{All zip codes}
+    \includegraphics[width=.60\linewidth]{figures/rtc/context/evictions_conn.png}
+    \caption{Weekly eviction fillings within the state of Connecticut as reported by the \href{https://evictionlab.org/}{Eviction Lab at Princeton}}
     \label{SUBFIGURE LABEL 3}
 \end{figure}
-\begin{itemize}
-    \item \href{https://nlihc.org/sites/default/files/Overview-of-National-Eviction-Moratorium.pdf}{Reference} The Centers for Disease Control and Prevention (CDC) took unprecedented action on September 1 by
-issuing a temporary national moratorium on most evictions for nonpayment of rent to help prevent
-the spread of coronavirus. Citing the historic threat to public health posed by coronavirus, the CDC
-declared that an eviction moratorium would help ensure people are able to practice social distancing
-and comply with stay-at-home orders. The CDC issued on October 9 guidance creating new burdens
-for renters seeking moratorium protections. While the new guidance does not rescind the moratorium
-on most evictions for nonpayment of rent, it states that landlords may challenge tenant declarations and
-initiate eviction proceedings at any time. The new guidance undermines the intent of the CDC’s order by
-eroding protections for renters and making it more difficult for struggling renters to remain stably housed.
-\item CDC argues coronavirus presents a historic threat to public health and eviction
-moratoriums can be an effective public health measure to prevent the spread of coronavirus. An eviction
-moratorium is necessary to ensure people are able to follow best practices recommended by the CDC to
-cut down on coronavirus transmission, including quarantine, isolation, and social distancing. 
-\item Evictions – even a single eviction filing – creates a longterm mark on a renter’s record, hindering their access to future housing opportunities.
-\end{itemize}
+\subsection{Treatment}
 
-\subsection{Implementation}
-Because the expected demand for legal services under the Right to Counsel exceed the current level of legal support, state representatives decided to implement the policy in phases.\footnote{During the two years leading up to the pandemic, Connecticut saw 20,000 eviction fillings on average\footnote{\href{https://youtu.be/sLpi4xlVGgU?t=1002}{link}}} In the first stage, the policy was made available to a subset of the zip codes (the 14 shown in yellow) which correspond to $30\%$ of evictions and $20\%$ percent of the renter population.\footnote{CBF Assignment Sheet-- received via email on August 26th --Expected to assist 2,000 households in the first phase, in a state where 20,000 residents faced eviction} Individuals and families within these zip codes who made $80\%$ or less than the area median income were eligible for legal support starting on January 31, 2022.\footnote{(\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{"Income-eligible"} means (A) having household income at or below
-eighty per cent of the state median income adjusted for family size, as
-determined by the United States Department of Housing and Urban
-Development, at the time of the request for representation; or (B)
-receiving one of the following types of public assistance: (i) Temporary
-Assistance for Needy Families, (ii) Supplemental Nutrition Assistance
-Program benefits, (iii) Medicaid, (iv) Supplemental Security Income, (v)
-refugee resettlement benefits, (vi) rental assistance under chapter 138a
-of the general statutes, or (vii) the federal Housing Choice Voucher
-Program, 42 USC 1437f(o); } Beginning earlier, on October 1, 2021, landlords were to notify individuals of the existence of this policy when serving tenants with a notice to quit (the first step in an eviction proceeding -- the entire process is described in more detail in the appendix). In addition to landlords, courts were expected to inform tenants of the policy when and if tenants appeared in court.\footnote{\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{``On} and after October 1, 2021, an owner, lessor, landlord, legal
+\footnote{CBF Assignment Sheet-- received via email on August 26th --}  Beginning earlier, on October 1, 2021, landlords were to notify individuals of the existence of this policy when serving tenants with a notice to quit (the first step in an eviction proceeding -- the entire process is described in more detail in the appendix). In addition to landlords, courts were expected to inform tenants of the policy when and if tenants appeared in court.\footnote{\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{``On} and after October 1, 2021, an owner, lessor, landlord, legal
 representative or agent of an owner, lessor or landlord, a housing
 authority or a housing subsidy program administrator, as applicable,
 shall attach a copy of the notice described under subdivision (1) of this
@@ -204,7 +187,7 @@ and applying for assistance.''} Given that the lack of enforcement with respect 
     \centering
 \includegraphics[width=0.7\textwidth]{figures/rtc/maps/zip_code_status.pdf}  
         \caption{Treatment status for each zip code (yellow indicates treated zip code): \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/joint/maps/treatment_status.py}{Reproduced Here}}
-    %\label{SUBFIGURE LABEL 4}
+    \label{fig:treated_areas}
 \end{subfigure}
 \caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/jmp_paper/blob/main/notebooks/gradient_descent_motivating_example.ipynb}{Reproduced Here}}
 %\label{FIGURE LABEL}
@@ -227,16 +210,17 @@ differences in housing outcomes between the control and short-term subsidy group
 \section{Framework}
 \label{sec:framework}
 \subsection{Context}
-To keep things simple, we describe our approach in the specific context of cluster-level randomized control trials where we're interested in estimating treatment heterogeneity.\footnote{ Cluster-level randomized control trials are randomized control trials where treatment varies at a level above the unit of interest} Such experiments are common in development, education, and health settings because they are (A) generally easier to implement, (B) better adhere to the potential outcome framework\footnote{Reduce the chance of spillover effects between treated and non-treated individuals.} and perhaps most importantly\footnote{See John Lists's book, `The Voltage Effect` which highlights this importance in great detail} (C) allow us to understand the the effects of scaling the treatment.\footnote{Many large scale studies such as HIE prefer to include many control variables in their regression specification: size of family, age categories, education level, income, self-reported health status, and use of medical care in the year prior to the start of the experiment, kind of insurance (if any) the person had prior to the experiment, whether family members grew up in a city, suburb, or town, and spending on medical care and dental care prior to the experiment} With a binary treatment variable, such a problem can be decomposed into two separate problems where the objective function is minimized separately over the treatment and control groups.
+To keep things simple, we describe our approach in the specific context of cluster-level randomized control trials where we're interested in estimating treatment heterogeneity. Cluster-level randomized control trials are randomized control trials where treatment varies at a level above the unit of interest. Such experiments are common in development, education, and health settings because they are (A) generally easier to implement (\cite{gerber2012field}), (B) better adhere to the potential outcome framework (\cite{imbens2015causal}) and perhaps most importantly (C) allow us to understand the the effects of scaling the treatment (\cite{list2021voltage}). 
+
+
+\subsection{Challenge (\textcolor{blue}{The Tragic Triad})\footnote{The expression ``tragic triad" is taken from \cite{yu2020gradient}}}
+In the absence of cluster data, under the selection on observable and stable unit treatment value assumptions, such an estimation problem can be expressed as two separate optimization functions solver over the treatment and control groups. 
 
 \begin{align*}
-    \underset{f \in \sigma(X)}{\text{inf}} \ E\big[(Y - f)^2\big]
+    \underset{f \in \sigma(X)}{\textrm{inf}} \ \mathbb{E}\big[(Y-f )^2\big]
 \end{align*}
  
-
-\subsection{Challenge (\textcolor{blue}{The Tragic Triad})\footnote{The expression "tragic triad" is taken from \cite{yu2020gradient}}}
-Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each treatment group: We observe only a subset of the clusters; The distribution of covariates can differ across clusters; The distribution of outcomes conditional on covariates may differ across clusters. The above issues are perhaps only magnified as we increase the dimensionality of the data.\par 
-As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions: extrapolation. It does, however, as indicated in figure \ref{fig:highb}, suggest that we may need to reconsider how we go about learning in this context
+Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each treatment group: (1) we observe only a subset of the clusters, (2) the distribution of covariates can differ across clusters, and (3) the distribution of outcomes conditional on covariates may differ across clusters. The issues are perhaps only magnified as we increase the dimensionality of the data. As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions  (extrapolation) so much as it motivates us to reconsider how we go about it, as highlighted in figure \ref{fig:highb}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
@@ -257,7 +241,7 @@ As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021
 
 
 
-The central challenge is how to incorporate a cluster indicator in the training phase so that the function adaptively pools information across clusters, without using the cluster indicator in the inference phase. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions.
+From a practical perspective, the central challenge is how to incorporate a cluster indicator in the training phase so that the function adaptively pools information across clusters, without using the cluster indicator in the inference phase. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions.
 
 \begin{figure}[htbp]
 \centering
@@ -555,7 +539,7 @@ mean costs reported above.''}
     \item \href{https://nlihc.org/sites/default/files/Overview-of-National-Eviction-Moratorium.pdf}{Reference} Additional renter protections, such as right to counsel, expungement of eviction records, and just-cause
 eviction standards, are needed to help protect renters now and in the long term.
 \end{itemize}
-The recent events of Covid-19 and rising inflation have magnified the importance and fragility of housing for low-income individuals. In response to this, we empirically assess the effectiveness of an initiative, growing in popularity across the U.S., known as the Right to Counsel (RTC). Currently adopted in 15 cities and 3 states, the initiative aims to combat the 3.6 million eviction fillings that occur each year in the U.S. by closing the gap in legal representation between landlord and tenant. Closing such a gap entails providing legal representation for tenants which as the case of Boston in 2019 which saw 39,594 eviction cases filed only  with only $8.7\%$ of tenants represented.\footnote{(\href{https://bostonbar.org/app/uploads/2022/06/rtc-report-for-web-or-email.pdf}{Samuelson et a. [2020]})}
+The recent events of Covid-19 and rising inflation have magnified the importance and fragility of housing for low-income individuals. Indeed homelessness itself has become a staple in the news and political conversations (\href{https://www.nytimes.com/2022/10/31/opinion/oregon-governor-race.html}{NyTimes}). In response to this, we empirically assess the effectiveness of an initiative, growing in popularity across the U.S., known as the Right to Counsel (RTC). Currently adopted in 15 cities and 3 states, the initiative aims to combat the 3.6 million eviction fillings that occur each year in the U.S. by closing the gap in legal representation between landlord and tenant. Closing such a gap entails providing legal representation for tenants which as the case of Boston in 2019 which saw 39,594 eviction cases filed only  with only $8.7\%$ of tenants represented.\footnote{(\href{https://bostonbar.org/app/uploads/2022/06/rtc-report-for-web-or-email.pdf}{Samuelson et a. [2020]})}
 Lastly, while no pre-analysis plan accompanies this paper, the only source of heterogeneity explored is the effects of the policy on Black and female tenants. As well documented in the eviction literature, these subgroups share the greatest likelihood and costs of evictions, as \cite{desmond2019unaffordable} writes, ``Low-income women, especially poor black women, are at high risk of eviction'', and \cite{collinson2022eviction} notes that with regards to the costs of evictions, ``We find particularly sharp negative impacts for female and Black tenants,\footnote{\cite{evans2019reducing} writes `} who drive the effects on labor market outcomes, residential mobility, and interactions with homelessness.'' It seems likely, therefore, that if landlords respond in an adverse way to The Right to Counsel, it would be be towards this sub-population in particular. Hence, all regression specifications are fit both over the entire sample and this sub-sample of interest. 
 As a general statement, Economists are interested in understanding the effects of policies at scale. Almost by definition, though, these effects are not well identified. The aim, therefore, is to capture a particular effect of the policy as it's in the process of being deployed with the hope that this intermediate measurement might be informative about the effect under the new equilibrium.\par 
 In this paper, we take as our intermediate measurement the housing search length for low-income individuals. As explained in the body of the paper, this is a far from perfect or comprehensive outcomes variable. That said, we regard as a meaningful signal in the sense that if there are adverse effects of the policy -- if landlords decide to re-optimize in an adverse fashion in response to the Right to Counsel -- we would likely see it via the housing search channel. \par 
@@ -565,7 +549,19 @@ And indeed, while extremely preliminary, we see some indication that there may b
 \bibliography{bibliography.bib}
 
 \section{Appendix}
-
+\subsection{Implementation Details}
+\begin{itemize}
+    \item (\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{"Income-eligible"} means (A) having household income at or below
+eighty per cent of the state median income adjusted for family size, as
+determined by the United States Department of Housing and Urban
+Development, at the time of the request for representation; or (B)
+receiving one of the following types of public assistance: (i) Temporary
+Assistance for Needy Families, (ii) Supplemental Nutrition Assistance
+Program benefits, (iii) Medicaid, (iv) Supplemental Security Income, (v)
+refugee resettlement benefits, (vi) rental assistance under chapter 138a
+of the general statutes, or (vii) the federal Housing Choice Voucher
+Program, 42 USC 1437f(o);
+\end{itemize}
 \subsection{Detailed Timeline}
 \begin{itemize}
     \item \href{https://nlihc.org/sites/default/files/Overview-of-National-Eviction-Moratorium.pdf}{Reference}: The CDC eviction moratorium took effect September 4 and was initially set to expire on December 31.
@@ -577,6 +573,21 @@ covering an estimated 80% of all U.S. counties and 90% of all renters. The CDC�
 day after the Biden administration announced additional steps it will take to protect renters and prevent
 evictions during the pandemic, including those recommended by NLIHC and the National Housing Law
 Project.
+ 
+    \item \href{https://nlihc.org/sites/default/files/Overview-of-National-Eviction-Moratorium.pdf}{Reference} The Centers for Disease Control and Prevention (CDC) took unprecedented action on September 1 by
+issuing a temporary national moratorium on most evictions for nonpayment of rent to help prevent
+the spread of coronavirus. Citing the historic threat to public health posed by coronavirus, the CDC
+declared that an eviction moratorium would help ensure people are able to practice social distancing
+and comply with stay-at-home orders. The CDC issued on October 9 guidance creating new burdens
+for renters seeking moratorium protections. While the new guidance does not rescind the moratorium
+on most evictions for nonpayment of rent, it states that landlords may challenge tenant declarations and
+initiate eviction proceedings at any time. The new guidance undermines the intent of the CDC’s order by
+eroding protections for renters and making it more difficult for struggling renters to remain stably housed.
+\item CDC argues coronavirus presents a historic threat to public health and eviction
+moratoriums can be an effective public health measure to prevent the spread of coronavirus. An eviction
+moratorium is necessary to ensure people are able to follow best practices recommended by the CDC to
+cut down on coronavirus transmission, including quarantine, isolation, and social distancing. 
+\item Evictions – even a single eviction filing – creates a longterm mark on a renter’s record, hindering their access to future housing opportunities.
 \end{itemize}
 
 \begin{comment}
