@@ -1,8 +1,9 @@
 \begin{align*} 
-& \textrm{linearModel} \ \textcolor{blue}{\text{data}} \\
+& \textrm{linearModel} \ \textcolor{blue}{\text{data}} \tag{OLS}\\
 & \textrm{linearModel} \circ \ \textrm{identityMap} \ \textcolor{blue}{\text{data}} \\ 
 & \textrm{linearModel} \circ  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) \ \textcolor{purple}{\text{params}} \\ 
 & \textrm{linearModel} \circ  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) \circ \textrm{identityMap} \  \textcolor{purple}{\text{params}} \\ 
 & \textrm{linearModel} \circ  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) \circ \big(\textrm{clusterMap} \ \textcolor{blue}{\text{data}}\big)  \textcolor{purple}{\text{params}} \\ 
 & \textrm{linearModel} >=>  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) >=> \big(\textrm{clusterMap} \ \textcolor{blue}{\text{data}}\big)  \textcolor{purple}{\text{params}} \\ 
+\intertext{For visual clarity we assume that composition has a higher precendance than function application. }
 \end{align*}
