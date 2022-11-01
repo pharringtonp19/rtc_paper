@@ -5,5 +5,5 @@
 & \textrm{linearModel} \circ  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) \circ \textrm{identityMap} \  \textcolor{purple}{\text{params}} \\ 
 & \textrm{linearModel} \circ  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) \circ \big(\textrm{clusterMap} \ \textcolor{blue}{\text{data}}\big)  \textcolor{purple}{\text{params}} \\ 
 & \textrm{linearModel} >=>  \big(\textrm{featureMap} \ \textcolor{blue}{\text{data}}\big) >=> \big(\textrm{clusterMap} \ \textcolor{blue}{\text{data}}\big)  \textcolor{purple}{\text{params}} \\ 
-\intertext{For visual clarity we assume that composition has a higher precendance than function application. }
+\intertext{For visual clarity we assume that composition has a higher precendance than function application. Using Haskell-like notation, the fish operator denotes the composition of `embellished' functions. The functions are embellished in the sense that not only do they return the transformed data in the case of the featureMap, or the cluster specific parameters as in clusterMap, but to each function call they also return a data dependent penalty value. }
 \end{align*}
