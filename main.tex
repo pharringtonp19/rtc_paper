@@ -220,7 +220,7 @@ In the absence of cluster data, under the selection on observable and stable uni
     \underset{f \in \sigma(X)}{\textrm{inf}} \ \mathbb{E}\big[(Y-f )^2\big]
 \end{align*}
  
-Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each treatment group: (1) we observe only a subset of the clusters, (2) the distribution of covariates can differ across clusters, and (3) the distribution of outcomes conditional on covariates may differ across clusters. The issues are perhaps only magnified as we increase the dimensionality of the data. As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions  (extrapolation) so much as it motivates us to reconsider how we go about it, as highlighted in figure \ref{fig:highb}.
+Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each group: (1) we observe only a subset of the clusters, (2) the distribution of covariates can differ across clusters, and (3) the distribution of outcomes conditional on covariates may differ across clusters. The issues are perhaps only magnified as we increase the dimensionality of the data. As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions  (extrapolation) so much as it motivates us to reconsider how we go about it, as highlighted in figure \ref{fig:highb}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
@@ -235,13 +235,12 @@ Under the potential outcome framework, clustered level treatment assignment can 
     \caption{}
     \label{fig:highb}
 \end{subfigure}
-\caption{}
+\caption{(b) Percentage of the five nearest neighbors in a different cluster. Data consists of 25 cluster and 25 observations per cluster. Clusters differ only in the mean which is drawn from multivariate normal distribution with an identity matrix as the covariance matrix: \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/Nearest_Neighbors_Example.ipynb}{Reproduced Here}}
 \label{fig:high}
 \end{figure}
 
 
-
-From a practical perspective, the central challenge is how to incorporate a cluster indicator in the training phase so that the function adaptively pools information across clusters, without using the cluster indicator in the inference phase. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions.
+The aim therefore is to locally correct for the presence of clusters in a staticially and computationally reasonable way. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions.
 
 \begin{figure}[htbp]
 \centering
