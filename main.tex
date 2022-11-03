@@ -60,7 +60,7 @@
 \thispagestyle{empty} % makes the title page number not appear
 \vspace{-2em}
 \begin{abstract}
-Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a unified estimation framework that generalizes ordinary least squares, allows for nonparametric cluster effects,\footnote{To elaborate on this point, indivduals in the data are grouped together in some fashion. In our context, this grouping is done via a shared zip code. We indicate this grouping via an indicator variable. The nonparametric component is that we allow these the effect of this group memebership on the outcome of interest to vary across the other controls/features. That is, we don't place a functional form assumption on the way the cluster indicator variable interacts with the other controls.} and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Specifically, we consider the extent to which the policy increases housing instability by making it harder for low-income households to secure housing in the first place. Exploiting the ongoing roll-out of the policy across the state of Connecticut, our preliminary results suggest that housing is harder to secure in areas with higher eviction rates, suggesting that perhaps the policy is less effective at scale than generally understood. 
+Drawing from the Deep Learning Literature and in the language of Category Theory, we introduce a unified estimation framework that generalizes ordinary least squares, allows for nonparametric cluster effects,\footnote{To clarify this point, in many applied microeconomic contexts, individuals grouped together in some fashion. In our context, this grouping is done via a shared zip code. We indicate this grouping via an indicator variable. The nonparametric component is that we allow these the effect of this group memebership on the outcome of interest to vary across the other controls/features. That is, we don't place a functional form assumption on the way the cluster indicator variable interacts with the other controls.} and is inherently compositional, even under regularization. With this framework, we examine the effects of the Right to Counsel: a policy which ensures that low-income households facing eviction have access to free legal representation. Specifically, we consider the extent to which the policy increases housing instability by making it harder for low-income households to secure housing in the first place. Exploiting the ongoing roll-out of the policy across the state of Connecticut, our preliminary results suggest that housing is harder to secure in areas with higher eviction rates, indicating that the policy is less effective at scale than generally understood. 
 \vspace{0.2in}\\
 \noindent\textbf{Keywords:} Right to Counsel, Evictions, Deep Learning\\
 %\noindent\textbf{JEL Codes:} key1, key2, key3\\
@@ -77,22 +77,22 @@ Drawing from the Deep Learning Literature and in the language of Category Theory
 In this paper, the term \textit{Right to Counsel} refers to a policy initiative which ensures that tenants have access to free legal representation in eviction cases. 
 
 \section{Introduction}
-The 2 million evictions that occur each year across the United States are costly to individuals, landlords, courts, and the general public. Unlike criminal cases in the U.S., defendants in an eviction case are not provided a public attorney. A gap in legal representation, therefore, exists between landlords and tenants which is as large as $95\%-1\%$ in some areas in favor of the landlord  \cite{collinson2022eviction}. Given the severity of the costs associated with eviction, the multitude of factors which contribute to its occurrence, and the typical manner in which a eviction case is settled, many in the U.S. believe that free legal counsel should be provided.  Over the past five years, $15$ cities and $3$ states have introduced a Right to Counsel with with the hope that by closing this gap in representation, downstream outcomes will improve. \par 
+The 2 million evictions that occur each year across the United States are costly to individuals, landlords, courts, and the general public. Unlike criminal cases in the U.S., defendants in an eviction case are not entitled to a public attorney. A gap in legal representation, therefore, exists between landlords and tenants which is as large as $95\%-1\%$ in some areas in favor of the landlord  (\cite{collinson2022eviction}). Given the severity of the costs associated with eviction, the multitude of factors which contribute to its occurrence, and the typical manner in which a eviction case is settled, many in the U.S. believe that legal counsel should be provided to low income households. Over the past five years, $15$ cities and $3$ states have introduced a Right to Counsel with the aim of closing this gap and with the hope that doing so will improve downstream outcomes.\par 
 
 To some extent, this hope has been empirically justified when considering the direct outcomes of eviction cases. Both in the context of small scale randomized control trials as well as in city-wide roll-outs, researchers have generally found positive results (\cite{seron2001impact, greiner2012limits, cassidy2022effects}). The pressing unknown, though, is whether the indirect effects associated with the policy diminish or outweigh these positive legal outcomes. To date, one of the most consistent findings is that Legal Aid increases the length of the eviction process.\footnote{\cite{cassidy2022effects} writes: ``The number of days between a case filing and a judgment is also significantly longer in the UA zip codes after program implementation.''} By increasing the cost of evicting a tenant, the policy may disincentive landlords from renting to low-income households in the first place. As \cite{gunn1995eviction} writes, ``By increasing landlords' costs of doing business, legal services attorneys may enrich their clients at the expense of all other similarly situated poor tenants." \par 
-In this paper we draw on recent advances in deep learning to empirically assess whether this concern is justified. Specifically, we use the ongoing rollout of the Right to Counsel across the state of Connecticut to estimate its effect on the ease with which low-income households who are currently homeless are able to find housing. A key challenge in our setting is that the treatment (the policy) is assigned a level (the zip code) above the unit of interest (the individual). Building on recent deep learning papers (\cite{finn2017model} and \cite{kelly2020learning}), we implement an estimation framework that allows us to partial out the zip code effects in a nonparametric fashion.
+In this paper, we draw on recent advances in deep learning to empirically assess whether this concern is justified. Specifically, we use the ongoing rollout of the Right to Counsel across the state of Connecticut to estimate its effect on the ease with which low-income households, who are currently experiencing homelessness, are able to find housing. A key challenge in our setting is that the treatment (the policy) is assigned a level (the zip code) above the unit of interest (the individual). Building on recent deep learning papers (\cite{finn2017model} and \cite{kelly2020learning}), we implement an estimation framework that allows us to partial out the zip code effects in a nonparametric fashion.
 
-While preliminary, our results suggest that across zip codes with a high eviction rate (as measured in 2019), the housing search duration increases in response to the policy. Using a 30-day threhold, the probability that a household is still searching for housing after this cutoff increases by 5 percentage points. While the sign of this effect is relatively constant across a range of estimators, we emphasize that there are several important concerns/issues that cannot be addressed in our context. This paper should be therefore be understood as the first empirical microeconomic work to consider the unintended consequences of this policy, but given the importance of this topic, it certainly should not be the last.
+While preliminary, our results suggest that across zip codes with a high eviction rate (as measured in 2019), the length of the housing search increases in response to the policy. Using a 30-day threshold, the probability that a household is still searching for housing after this cutoff increases by 5 percentage points. While the sign of this effect is relatively constant across a range of estimators, we emphasize that there are several important concerns/issues that cannot be addressed in our context. This paper should be therefore be understood as the first empirical microeconomic work to consider the unintended consequences of this policy, but given the importance of this topic, it certainly should not be the last.
 
-There are two distinct reasons that explain why there has been little empirical work on this issue. As \cite{abramson2021welfare} points out, the first reason is that there hasn't been a suitable context to empirically assess the indirect effects of the policy. Prior works on the Right to Counsel either focus on small scale randomized control trials, such as (\cite{greiner2012limits}, \cite{seron2001impact}), which by construction only allow for the study of direct outcomes, or as in the case of (\cite{cassidy2022effects} and \cite{ellen2021lawyers}) study the city wide roll-out of New York City which is a very unique housing market.\footnote{\cite{evans2019reducing} writes, ``Not all areas have experienced a decline in homelessness. The trends in New York City (CoC NY600) and Los Angeles County have been particularly different from the rest of the country \dots Note that since 2012, these rates have increased by 57 and 31 percent, respectively.''} Tackling a similar research question to ours, but written one year prior,  \cite{abramson2021welfare} resorts to studying the effects of the Right to Counsel via a counterfactual analysis.\footnote{As \cite{abramson2021welfare} writes, ``I quantify the model to match data on evictions, homelessness, and rents in San Diego
+There are two distinct reasons for why there has been little empirical work on this issue previously. As \cite{abramson2021welfare} notes, there hasn't been a suitable context to empirically assess the indirect effects of the policy. Prior works on the Right to Counsel either focus on small scale randomized control trials, such as (\cite{greiner2012limits}, \cite{seron2001impact}), which by construction only allow for the study of direct outcomes, or as in the case of (\cite{cassidy2022effects} and \cite{ellen2021lawyers}) study the city wide roll-out of New York City which is a very unique housing market.\footnote{\cite{evans2019reducing} writes, ``Not all areas have experienced a decline in homelessness. The trends in New York City (CoC NY600) and Los Angeles County have been particularly different from the rest of the country \dots Note that since 2012, these rates have increased by 57 and 31 percent, respectively.''} Tackling a similar research question to ours, but written one year prior,  \cite{abramson2021welfare} resorts to studying the effects of the Right to Counsel via a counterfactual analysis.\footnote{As \cite{abramson2021welfare} writes, ``I quantify the model to match data on evictions, homelessness, and rents in San Diego
 County, and use it for counterfactual analysis.''}\par Only within the past year, as Washington and Connecticut adopted the Right to Counsel at the state level has the possibility of empirically assessing the policy at scale emerged. And only in the case of Connecticut, which adopted a meaningful and well documented staggered roll-out has this opportunity been realized. Due to supply constraints of legal services, low-income individuals in only a subset of Connecticut zip codes currently receive free legal aid under the policy. Meaningfully for our paper, several high eviction rate zip codes remain untreated as highlighted in figure \ref{fig:efr}.\par 
 
-The second reason the issue remains open is that the indirect effects of the Right to Counsel are difficult to capture. Evictions themselves are often informal. Mathew Desmond writes in his New York Times Best Seller, \textit{Evicted}, that informal evictions in Milwaukee account for $48\%$ of forced moves while formal evictions account for $24\%$. It seems reasonable to expect that landlords will would respond to the Right to Counsel through any number of informal or hard to detect ways. Indeed from conversations with lawyers who specialize in evictions, the question at times seemed not to be whether the costs of the Right to Counsel would be passed on to the tenants, but rather would we be able to capture it with data. As one lawyer wrote to us,  ``The thing to remember is that higher costs for landlords always get passed on to the tenants in some form (higher rent, deposits, fees, etc.)."\par 
-To empirically assess the roll-out of the policy across the state of Connecticut, we therefore make use of individual level data related to local Rapid Rehousing Programs within the state. Tracked by the U.S. Department of Housing and Urban development, theses programs assist households experiencing homelessness secure housing. Importantly for our work, these programs (1) are restricted to households who don't face significant barriers to housing, (2) provide limited short-term financial assistance and (3) require that the rental agreements that households sign have ``the same rights and responsibilities as a typical lease holder.''\footnote{\href{thttps://endhomelessness.org/resource/rapid-re-housing-a-history-and-core-components/}{Reference}: ``It is imperative that any lease agreement provides the tenant with **the same rights and responsibilities as a typical lease holder** and that the financial terms of the lease are such that the household has a reasonable ability to assume rental costs once financial support ends (keeping in mind that in the majority of cases, even households with no income at move-in retain their housing)"} For each household, we observe both pre-treatment characteristics (race, gender, family structure) as well as their length of their housing search, which is the main outcome variable of interest. \par 
-To this data set, we fit a series of estimators all within a single, unified estimation framework. As previously mentioned, a key challenge in our context, and in many policy oriented papers, is that treatment is assigned at a level above the unit of observation (treatment is assigned at the zip code level, as the policy is rolled out across zip codes, while observations are the the individual level). In a cross-sectional setting, this presents a problem because there is no within cluster variation to exploit. Instead of fitting within clusters, econometric models, in this setting, must partial out the cluster effects. Building off the deep learning papers of \cite{finn2017model} and \cite{kelly2020learning}, we introduce a framework that partials out the nonparametric effects in a controllable manner by \textit{regularizing the forward pass} of model. \par 
+The second reason this topic remains understudied is that the indirect effects of the Right to Counsel are difficult to capture. Evictions themselves are often informal. Mathew Desmond writes in his New York Times Best Seller, \textit{Evicted}, that informal evictions in Milwaukee account for $48\%$ of forced moves while formal evictions account for $24\%$. It seems reasonable to expect landlords to respond to the Right to Counsel through a number of informal or hard to detect ways. Indeed. from conversations with lawyers who specialize in evictions, the question at times seemed not to be whether the costs of the Right to Counsel would be passed on to the tenants, but rather whether they would be observable in the data. As one lawyer explained,  ``The thing to remember is that higher costs for landlords always get passed on to the tenants in some form (higher rent, deposits, fees, etc.)."\par 
+To empirically assess the roll-out of the policy across the state of Connecticut, we therefore make use of individual level data related to local Rapid Rehousing Programs within the state. Tracked by the U.S. Department of Housing and Urban Development, theses programs assist households experiencing homelessness secure housing. Importantly for our work, these programs (1) are restricted to households who don't face significant barriers to housing, (2) provide limited short-term financial assistance and (3) require that the rental agreements that households sign have ``the same rights and responsibilities as a typical lease holder.''\footnote{\href{thttps://endhomelessness.org/resource/rapid-re-housing-a-history-and-core-components/}{Reference}: ``It is imperative that any lease agreement provides the tenant with **the same rights and responsibilities as a typical lease holder** and that the financial terms of the lease are such that the household has a reasonable ability to assume rental costs once financial support ends (keeping in mind that in the majority of cases, even households with no income at move-in retain their housing)"} For each household, we observe both pre-treatment characteristics (race, gender, family structure) as well as their length of their housing search, which is the main outcome variable of interest. \par 
+To this data set, we fit a series of estimators all within a single, unified estimation framework. As previously mentioned, a key challenge in our context, and in many policy oriented papers, is that treatment is assigned at a level above the unit of observation (treatment is assigned at the zip code level, as the policy is rolled out across zip codes, while observations are the the individual level). In a cross-sectional setting, this presents a challenge because there is no within cluster variation to exploit. Instead of fitting within clusters, econometric models, in this setting, must partial out the cluster effects. Building off the deep learning papers of \cite{finn2017model} and \cite{kelly2020learning}, we introduce a framework that partials out the nonparametric effects in a controllable manner by \textit{regularizing the forward pass} of model. \par 
 Deep Learning models, which we base our framework on, are a subset of machine learning models that can be constructed by composing parameterized functions and trained via gradient descent-like methods. Typical models involve composing linear maps with nonlinear activation functions which can be shown to be universal approximators  (\cite{hornik1989multilayer}). In recent years, such models have become easier to train as gradients are computed ``automatically'' often via reverse mode automatic differentiation (\cite{griewank2008evaluating}) and the entire training process can be compiled and scaled across hardware accelerators like GPUs. \par 
-Deep learning models are often touted for their ability to drasticially improve their performance with the size of the data. In this paper, though, we leverage them because they allow us to encode meaningful priors in a controllable fashion. This quasi-Bayesian viewpoint of learning/estimation in the finite sample is in line with modern deep learning works (\cite{belkin2018reconciling},  \cite{nagarajan2019uniform}, \cite{wilson2020case}, \cite{belkin2021fit}) which emphasize the importance of ``understanding the nature of the inductive bias''\footnote{\cite{belkin2021fit} ``the properties that make some solutions preferable to others despite all of them fitting the training data equally''} of the estimator and differentiates this work from recent theoretical econometric work that seeks to reduce the influence of regularization in the estimation process (\cite{chernozhukov2018double}). We provide further clarification and justification for our approach in section \ref{subsec:ib}.\par 
-Our high level aim is an empirical estimation framework that can seamlessly account for clustered data (which is ubiquitous in applied work) in a flexible way, has a clear inductive bias, can be easily extended, and is conceptually simple. \textbf{TIES}: \textbf{T}argeted (handle cluster data), \textbf{I}nterpretable (clear inductive bias), \textbf{E}xtendable and \textbf{S}imple. While the details of the framework are further explained in section \ref{sec:framework}, the key ideas are captured by the equations below. As indicated in the first line, the framework generalizes ordinary least squares (fitting a linear model to the data). Furthermore, as represented by the clusterMap, the model allows for nonparameteric cluster effects by allowing the parameters of the neural network to vary across clusters during the forward pass.\footnote{The clusterMap is the cluster specific map that takes the parameters of the neural network that define the conditional expectation function and adopts them to better fit the individual cluster.} That is by equating clusters of the data to tasks in a meta-learning context, we partial out the cluster effects by allowing the parameters to adopt in the forward pass to the clusters, thereby ``locally'' correcting for the presence of clustered data in a global way. And finally, as indicated by the fish operator `$>=>$', the model remains inherently compositional, even under regularization. This is important for at least three reasons. First, it keeps the model conceptually simple. When we train the model we use one form of composition, when we predict with the model we use the standard form.\footnote{Indeed this language is helpful not only for understanding the model, but how it can be seemlessly evaluated and trained with little effort as highlighted in \cite{frostig2018compiling}}  Second, it enables us to understand the adjustment for the presence of clustered data as a gradient correction that favors early stopping at the cluster level. And third, via this gradient correction, and the work of \cite{domingos2020every}, we can understand our approach within the kernel method framework which in contrast to deep learning is well developed and well understood.
+While often touted for their ability to drastically improve their performance with the size of the data, we leverage them because they allow us to encode meaningful priors in a controllable fashion. This quasi-Bayesian viewpoint of learning/estimation in the finite sample is in line with modern deep learning works (\cite{jacot2018neural},  \cite{nagarajan2019uniform}, \cite{wilson2020case}, \cite{belkin2021fit}) which emphasize the importance of ``understanding the nature of the inductive bias''\footnote{\cite{belkin2021fit} ``the properties that make some solutions preferable to others despite all of them fitting the training data equally''} of the estimator and differentiates this work from recent theoretical econometric work that seeks to reduce the influence of regularization in the estimation process (\cite{chernozhukov2018double}). We provide further clarification and justification for our approach in section \ref{subsec:ib}.\par 
+Our high level aim is an empirical estimation framework that can seamlessly account for clustered data in a flexible way, has a clear inductive bias, can be easily extended, and is conceptually simple. \textbf{TIES}: \textbf{T}argeted (handle cluster data), \textbf{I}nterpretable (clear inductive bias), \textbf{E}xtendable and \textbf{S}imple. While the details of the framework are further explained in section \ref{sec:framework}, the key ideas are captured by the equations below. As indicated in the first line, the framework generalizes ordinary least squares (fitting a linear model to the data). Furthermore, as represented by the clusterMap, the model allows for nonparameteric cluster effects by allowing the parameters of the neural network to vary across clusters during the forward pass.\footnote{The clusterMap is the cluster specific map that takes the parameters of the neural network that define the conditional expectation function and adopts them to better fit the individual cluster.} That is by equating clusters of the data to tasks in a meta-learning context, we partial out the cluster effects by allowing the parameters to adopt in the forward pass to the clusters, thereby ``locally'' correcting for the presence of clustered data in a global way. And finally, as indicated by the fish operator `$>=>$', the model remains inherently compositional, even under regularization. This is important for at least three reasons. First, it keeps the model conceptually simple. When we train the model we use one form of composition, when we predict with the model we use the standard form.\footnote{Indeed this language is helpful not only for understanding the model, but how it can be seemlessly evaluated and trained with little effort as highlighted in \cite{frostig2018compiling}}  Second, it enables us to understand the adjustment for the presence of clustered data as a gradient correction that favors early stopping at the cluster level. And third, via this gradient correction, and the work of \cite{domingos2020every}, we can understand our approach within the kernel method framework which in contrast to deep learning is well developed and well understood.
 
 % \begin{figure}[htbp]
 % \centering
@@ -111,7 +111,7 @@ While our framework is introduced and well-motivated in a cross-sectional settin
 \end{align*}
 Given this function, it is straightforward to write down sufficient conditions for identification in a repeated cross-sectional setting following \cite{angrist2009mostly} without introducing any functional form assumptions. \par 
 
-The remained of the paper is organized as follows. Section 2 describes the essential institutional background of the Right to Counsel and Rapid Rehousing. Section 3 introduces the empirical framework. Section 4 sketches out a toy model, clarifying the estimand of interest in this context. Section 5 contains results and further details of the empirical framework as it relates to the repeated cross-sectional setting. Section 6 concludes.   
+The remainer of the paper is organized as follows. Section 2 describes the essential institutional background of the Right to Counsel and Rapid Rehousing. Section 3 introduces the empirical framework. Section 4 sketches out a toy model, clarifying the estimand of interest in this context. Section 5 contains results and further details of the empirical framework as it relates to the repeated cross-sectional setting. Section 6 concludes.   
 
 
 
@@ -214,18 +214,18 @@ To keep things simple, we describe our approach in the specific context of clust
 
 
 \subsection{Challenge (\textcolor{blue}{The Tragic Triad})\footnote{The expression ``tragic triad" is taken from \cite{yu2020gradient}}}
-In the absence of cluster data, under the selection on observable and stable unit treatment value assumptions, such an estimation problem can be expressed as two separate optimization functions solver over the treatment and control groups. 
+In the absence of cluster data, under the selection on observable and stable unit treatment value assumptions, such an estimation problem is equivalent to solving the following optimization problem over the treatment and controls groups separately. 
 
 \begin{align*}
-    \underset{f \in \sigma(X)}{\textrm{inf}} \ \mathbb{E}\big[(Y-f )^2\big]
+    \underset{f \in \sigma(X)}{\textrm{inf}} \ \mathbb{E}\big[(Y-f )^2\big] 
 \end{align*}
  
-Under the potential outcome framework, clustered level treatment assignment can be roughly thought of as forming the treatment and controls groups via random clustered sampling. From an estimation standpoint, this poses a few challenges because in each group: (1) we observe only a subset of the clusters, (2) the distribution of covariates can differ across clusters, and (3) the distribution of outcomes conditional on covariates may differ across clusters. The issues are perhaps only magnified as we increase the dimensionality of the data. As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions  (extrapolation) so much as it motivates us to reconsider how we go about it, as highlighted in figure \ref{fig:highb}.
+Under the potential outcome framework, clustered level treatment assignment poses a few challenges because in each group: (1) we observe only a subset of the clusters, (2) the distribution of covariates can differ across clusters, and (3) the distribution of outcomes conditional on covariates may differ across clusters. These issues are perhaps only magnified as we increase the dimensionality of the data. As shown in figure \ref{fig:high}, we extended the work of \cite{balestriero2021learning} to the situation of clustered sampling. As illustrated in figure \ref{fig:higha}, clustered sampling doesn't change the fundamental issue of learning in high dimensions  (extrapolation) so much as it motivates us to reconsider how we go about it, as highlighted in figure \ref{fig:highb}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.48\textwidth}
     \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/iid_cluster.pdf}
+    \includegraphics[width=.95\linewidth]{figures/framework/iid_cluster.png}
     \caption{}
     \label{fig:higha}
 \end{subfigure}
@@ -235,13 +235,11 @@ Under the potential outcome framework, clustered level treatment assignment can 
     \caption{}
     \label{fig:highb}
 \end{subfigure}
-\caption{(b) Percentage of the five nearest neighbors in a different cluster. Data consists of 25 cluster and 25 observations per cluster. Clusters differ only in the mean which is drawn from multivariate normal distribution with an identity matrix as the covariance matrix: \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/Nearest_Neighbors_Example.ipynb}{Reproduced Here}}
+\caption{(a) Probability that a observation in the test set is in the convex hull formed by the training set (b)  Fraction of the five nearest neighbors in a different cluster. Data consists of 25 cluster and 25 observations per cluster. Clusters differ only in the mean which is drawn from multivariate normal distribution with an identity covariance matrix: Reproduced \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/How_Input_Normalization_Changes_Our_Understanding_of_Interpolation_vs_Extrapolation_With_Clusters.ipynb}{Here} and  \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/Nearest_Neighbors_Example.ipynb}{Here}}
 \label{fig:high}
-\end{figure}
-
-
-The aim therefore is to locally correct for the presence of clusters in a staticially and computationally reasonable way. To highlight this, we construct a toy data set where the average within cluster outcome value is zero (i.e. adding cluster specific fixed effects would not improve the fit to the data). The central challenge is how ``addaptively'' share information across clusters. That is, when there are a lot of clusters present, we would intuitively prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. And of course, we would like to extend this to high dimensions.
-
+\end{figure} \par 
+We can use the following motivating example to illustrate the pratical challenge. The key issue is how to locally correct for the presence of clustered data. Intuitively, when there are a lot of clusters present, we would prefer a small bandwidth. When there are few clusters present, we would prefer a larger bandwidth. Figure \ref{fig:nonparametrics}
+highlights why this local correction is necessary in that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function.
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.3]{figures/framework/local_linear_no_const_0.5_18_LM.png}
@@ -250,9 +248,28 @@ The aim therefore is to locally correct for the presence of clusters in a static
 \includegraphics[scale=0.3]{figures/framework/local_linear_no_const_5.0_18_LM.png}
 \includegraphics[scale=0.3]{figures/framework/local_linear_no_const_10.0_18_LM.png}
 \includegraphics[scale=0.3]{figures/framework/local_linear_no_const_15.0_18_LM.png}
-\caption{The general pattern that these figures try to highlight is that in order to fit the the `v`-shaped valley in the function, the model overfits the tails of the function -- \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/local_weighted_linear_regression_no_avg_effect_LM.ipynb}{Reproduced Here}}
+\caption{\href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/local_weighted_linear_regression_no_avg_effect_LM.ipynb}{Reproduced Here}}
 \label{fig:nonparametrics}
 \end{figure}
+Our approach is motivated in part by \cite{domingos2020every} which illustrates how neural networks can be understood within the framework of a kernel machine. The insight of the work is that the kernel, the similarity measure $k(x,x')$ can be understood as the inner product of the gradient of the partially evaluated neural network a the corresponding point. While such a relationships holds exactly only in the gradient flow regiem, it suggests that we can locally correct our model for the presence of clustered data in a global manner by adjusting how we take the gradients of the model. 
+
+\begin{align*}
+\intertext{Path Kernel}
+K(x,x') = \int \Big \langle \nabla _{\theta} f_x\big(\theta(t)\big), \nabla _{\theta}f_{x'}\big(\theta(t)\big) \Big\rangle dt \\ 
+\intertext{Model}
+K_{\theta}(x,x') = \int _0^1 \Big \langle \nabla _{\theta} f_x\big(\theta(t)\big), \nabla _{\theta}f_{x'}\big(\theta(t)\big) \Big\rangle dt \\ 
+\intertext{Cluster Specific Model}
+K_{\theta^*_c(\theta)}(x,x') = K_{\theta}(x,x') + \int _1^{1+ \varepsilon} \Big \langle \nabla _{\theta} f_x\big(\theta(t)\big), \nabla _{\theta}f_{x'}\big(\theta(t)\big) \Big\rangle dt \\ 
+\end{align*} 
+
+
+illustrates that as the learning rate of a neural network approaches the gradient flow regime, the learned model can be represented by a kernel machine with the path kernel.\footnote{Kernel Machines\begin{align*}
+    y = g \Big(\sum a_iK(x, x_i) + b \Big) 
+\end{align*}} 
+
+
+
+
 In contrast, subject to the appropriate hyperparameters, our method produces a reasonable estimate.
 
 \begin{figure}[htbp]
@@ -273,6 +290,11 @@ In contrast, subject to the appropriate hyperparameters, our method produces a r
 %\label{FIGURE LABEL}
 \end{figure}
 \subsection{Implicit Cluster Map}
+\begin{itemize}
+    \item In contrast to linear regression, we do it implicitly 
+    \item In contrast to econometric, machine-learning agnostic, we're trying to leverage the success of deep learning models to define what's local. 
+\end{itemize}
+As mentioned in the introduction, our approach to modern statistical learning theory places less emphasis on understanding the statistical properties of the method (which are difficult to capture in a meaningful way) and more emphasis on the understanding the inductive bias of the algorithm. 
 \textbf{TL;DR} In this section, we define our implicit cluster map as a regularized version of the popular gradient based meta-learning MAML.\footnote{Model Agnostic Meta-Learning (MAML), a method that consists of two optimization loops, with the outer loop finding a meta-initialization,
 from which the inner loop can efficiently learn new tasks.-- \cite{raghu2019rapid}} While follow-up work such as \cite{raghu2019rapid} has shown that the ``the meta-initialization already providing high quality
 representations'', such an analysis assumes a cluster specific head of the network. We show that empirically, without this cluster specific head, the meta-initialization is not done in the right space which motivates our need to add an additional form of regularization.
@@ -330,6 +352,11 @@ We illustrate the relative importance of our design choices in figure \ref{fig:m
         \caption{High Level Summary}
         \label{fig:hls}
 \end{figure}
+
+Such an approach is inspired/related by proximal methods (\cite{parikh2014proximal}).\footnote{Note that the codomain of $f$ is taken to be $\mathcal{R} \cup \{ \infty\}$, while the domain are set of inputs that take finite values.} Which can be thought of as generalized projections, as well as gradient steps. 
+\begin{align*}
+    \textrm{prox}_{\lambda, f}(v) := \underset{x}{\textrm{argmin}} \ \Big( f(x) + \frac{1}{2\lambda} \| x - v \|^2\Big)
+\end{align*}
 \subsection{Inductive Bias}
 \label{subsec:ib}
 
@@ -357,22 +384,32 @@ We illustrate the relative importance of our design choices in figure \ref{fig:m
 \caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/grad_desc_toy.ipynb}{Reproduced Here}: The grey and black dots represent data from separate clusters. Each figure corresponds to fitting a neural network to this data under different training algorithms}
 \label{fig:mamlablation}
 \end{figure}
+
+
 \section{Toy Model}
-\subsection{Overview}
-In order to clarify our estimand of interest, we write down the following model. The key detail is that we parameterize the constraint function with the Right to Counsel Policy. Everything else is rather standard in that we allow the parameters of the constraint and utility functions to differ across individuals, and define our estimand as the expected value take with respect to these the probability law induced by these random variables. \textbf{Notationally}, we denote the partial evaluation of a function by subscripting the function with the argument.\par 
-\subsection{Model}
-We define an element of the choice set as a bundle of housing related features. Most relevant to our data set is the housing search length which we include as the first component. It's important to acknowledge that individuals may be substituting across a wide range of housing aspects including the quality of the house and the price among others features.\footnote{To introduce uncertainty into the model, we could augment each housing bundle with a stochastic process that captures the probability of remaining in the house across each time period. Note, this stochastic process would likely vary across individuals.}
+We write down the following model in order to clarify our estimand of interest. The key detail is that we parameterize the ``consumer's'' constraint function with a variable that denotes the status of the Right to Counsel (where 1 means in the policy is in effect, and 0 means it is not). We allow the parameters of the constraint and utility functions to differ across individuals, and define our estimand as the expected value taken with respect to these the probability law induced by these random variables. \textbf{Notationally}, we denote the partial evaluation of a function by subscripting the function with the argument.\par 
+We define an element of the choice set as a bundle of housing related features. The first component we include, which is the most relevant to our dataset, is housing search length. It's important to acknowledge that individuals may be substituting across a wide range of housing aspects (such as the price of the house and the quality of the house) among other features. For the purposes of this model, we omit these, as we do not observe these features in the data. 
 \begin{align*}
     x := (\textrm{search period}, \textrm{quality}, \textrm{price}, \dots ) \in \mathcal{X}
 \end{align*}
-As indicated by its signature, we introduce a parameterized constraint function where we allow the parameters to vary across individuals. This constraint function not only incorporates the macroeconomic features of the housing market, but also the landlords actions/policies towards individual tenants.
+
+
+
+
+As indicated by its signature, we introduce a parameterized constraint function where we allow the parameters to vary across individuals. This constraint function not only incorporates the macroeconomic features of the housing market, but also the effects of the landlords actions/policies towards individual tenants.
 \begin{align*}
-   F :: \textrm{Params} \to  \textrm{RTC} \to \mathcal{X} \to \{0, 1\} 
+   F :: \textrm{Params} \to  \textrm{RTC} \to \mathcal{X} \to \{0, 1\} %Shomik: This formulation seems unclear to me.
 \end{align*}
-The uttility function then captures some (present discounted) value of each housing option. 
+The utility function then captures the value of each housing option. 
 \begin{align*}
 U :: \textrm{Params} \to \mathcal{X} \to \mathcal{R}_+ 
 \end{align*}
+
+%================
+%Shomik: I think instead of saying params, we should put some notation. Like H (for housing) or something). Makes it a bit cleaner IMO. Or is that what you're using P for later? Then make it P from the get go.
+
+%
+%=====================
 With the essential components of the model defined, we can express the individual choice problem as follows. The following problem would model an individual not in a treated zip code or prior to the policy implementation as the second parameter of the constraint function takes the value $0$. The pre-image of $0$ under the constraint function defines the feasibility set. 
 \begin{align*}
 \underset{x \in F_{p, 0}^{-1}(0)}{\textrm{maximize}} \ U_{\alpha} (x)
@@ -388,6 +425,7 @@ As we are only interested in the later effects, we integrate over the individual
 \end{align*}
 
  
+%Shomik: We need a conclusion to this. Say what it is and why.
 
 
 
@@ -404,7 +442,15 @@ The following notation defines the key variables used in the estimators defined 
 \textbf{Note}: Subscripts on the outcome corresponding to subsets of individuals who are observed in that corresponding time period. 
 
 \subsection{Difference-in-Difference}
-We fit the following difference-in-difference estimator. In this specification and for the ones that follow, $Y_i$ is a binary variable that indicates whether the search length was less than some specified number of days. As we illustrate in figure \ref{fig:diff_mean}, the percentage point effect of the Right to Counsel (the y-axis) is relatively consistent as we vary the acceptable move-in-date threshold. 
+
+%Thought: Change Y_i to Y_id (maybe?) where d is the number of days. Not t because that will give the wrong impression.
+We fit the following difference-in-difference estimator. In this specification and for the ones that follow, $Y_i$ is a binary variable that indicates whether the search length was less than some specified number of days. We run multiple regressions where we vary what this cutoff is, be it ten, twenty, or sixty days. These results are illustrated in figure \ref{fig:diff_mean}, where we run a number of Difference-in-Difference regressions by changing the cutoff point and graphing the estimates. As we can see the percentage point effect of the Right to Counsel (the y-axis) is relatively constant as we vary the acceptable move-in-date threshold.
+
+%=================
+%What's the best way of saying what this means and why we should care?
+
+%We need some of the tables at a specific value. Like a standard regression table of the diff in diff at some cutoff values. Both for the appendix and your presentation (if you can swing it)
+%=================
 \begin{align*}
     \beta_0 &= \mathbb{E}[Y_1 -Y_0 \mid D=1] -  \mathbb{E}[Y_1 - Y_0 \mid D=0] \end{align*}
 Importantly, when we restrict the sample to only high eviction zip codes in figure \ref{fig:diff_mean_high}, we see a relatively consistent negative effect on the probability of moving into housing by a certain date.
@@ -422,12 +468,15 @@ Importantly, when we restrict the sample to only high eviction zip codes in figu
     \caption{High Eviction Zip Codes}
     \label{fig:diff_mean_high}
 \end{subfigure}
-\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement with a $75\%$ sampling rate.)}
 \label{fig:diff_mean}
 \end{figure}
 
 \subsection{Difference-in-Difference with Controls}
 Adding individual level controls as well as zip code fixed effects makes a material difference for the magnitude of the effect but not the sign when we again restrict the sample to high eviction zip codes in figure \ref{fig:diff_control_high}.
+
+%Shomik: My dumb ass says that this is impacting the signs since the estimates are more consistently negative. We need to say why this is happening and what that means.
+
 \begin{align*}
     Y_i &= \alpha _0 + \beta_0 \textrm{Post}_i \times \textrm{Treated}_i + \beta_1  \textrm{Post}_i + \beta_2 \textrm{Treated}_i \\ 
     &\quad + \beta _3X_i + \beta_4 Z_i + \varepsilon_i
