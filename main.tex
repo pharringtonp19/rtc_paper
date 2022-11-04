@@ -185,7 +185,7 @@ and applying for assistance.''} Given that the lack of enforcement with respect 
 \end{subfigure}
 \begin{subfigure}{.48\textwidth}
     \centering
-\includegraphics[width=0.7\textwidth]{figures/rtc/maps/zip_code_status.pdf}  
+\includegraphics[width=0.95\textwidth]{figures/rtc/maps/zip_code_status.pdf}  
         \caption{Treatment status for each zip code (yellow indicates treated zip code): \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/joint/maps/treatment_status.py}{Reproduced Here}}
     \label{fig:treated_areas}
 \end{subfigure}
@@ -357,33 +357,6 @@ Such an approach is inspired/related by proximal methods (\cite{parikh2014proxim
 \begin{align*}
     \textrm{prox}_{\lambda, f}(v) := \underset{x}{\textrm{argmin}} \ \Big( f(x) + \frac{1}{2\lambda} \| x - v \|^2\Big)
 \end{align*}
-\subsection{Inductive Bias}
-\label{subsec:ib}
-
-
-\begin{figure}[htbp]
-\centering
-\begin{subfigure}{.32\textwidth}
-    \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/dml_original.png}
-    \caption{Double Machine Learning}
-    \label{fig:overfittails}
-\end{subfigure}
-\begin{subfigure}{.32\textwidth}
-    \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/dml_standard_nn.png}
-        \caption{Standard Deep Learning}
-    \label{fig:wrongspace}
-\end{subfigure}
-\begin{subfigure}{.32\textwidth}
-    \centering
-    \includegraphics[width=.95\linewidth]{figures/framework/dml_linear_comp.png}
-        \caption{Linear Regression}
-    \label{fig:rfp}
-\end{subfigure}
-\caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/grad_desc_toy.ipynb}{Reproduced Here}: The grey and black dots represent data from separate clusters. Each figure corresponds to fitting a neural network to this data under different training algorithms}
-\label{fig:mamlablation}
-\end{figure}
 
 
 \section{Toy Model}
@@ -597,6 +570,34 @@ And indeed, while extremely preliminary, we see some indication that there may b
 \bibliography{bibliography.bib}
 
 \section{Appendix}
+\subsection{Inductive Bias}
+\label{subsec:ib}
+
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.32\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_original.png}
+    \caption{Double Machine Learning}
+    \label{fig:overfittails}
+\end{subfigure}
+\begin{subfigure}{.32\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_standard_nn.png}
+        \caption{Standard Deep Learning}
+    \label{fig:wrongspace}
+\end{subfigure}
+\begin{subfigure}{.32\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/framework/dml_linear_comp.png}
+        \caption{Linear Regression}
+    \label{fig:rfp}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/rfp/blob/main/notebooks/grad_desc_toy.ipynb}{Reproduced Here}: The grey and black dots represent data from separate clusters. Each figure corresponds to fitting a neural network to this data under different training algorithms}
+\label{fig:mamlablation}
+\end{figure}
+
 \subsection{Implementation Details}
 \begin{itemize}
     \item (\href{https://www.cga.ct.gov/2021/ACT/PA/PDF/2021PA-00034-R00HB-06531-PA.PDF}{"Income-eligible"} means (A) having household income at or below
