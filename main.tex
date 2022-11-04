@@ -354,9 +354,9 @@ We illustrate the relative importance of our design choices in figure \ref{fig:m
 \end{figure}
 
 Such an approach is inspired/related by proximal methods (\cite{parikh2014proximal}).\footnote{Note that the codomain of $f$ is taken to be $\mathcal{R} \cup \{ \infty\}$, while the domain are set of inputs that take finite values.} Which can be thought of as generalized projections, as well as gradient steps. 
-\begin{align*}
-    \textrm{prox}_{\lambda, f}(v) := \underset{x}{\textrm{argmin}} \ \Big( f(x) + \frac{1}{2\lambda} \| x - v \|^2\Big)
-\end{align*}
+
+
+ 
 
 
 \section{Toy Model}
@@ -541,6 +541,24 @@ As previously illustrated, though, when treatment varies at the cluster level su
 \caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/cluster_diff_n_diff.py}{Reproduced Here}: Confidence Bands formed sampling across random parameter initializations}
 \label{fig:rfp_results}
 \end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/rfp_False_False.png}
+    \caption{All zip codes}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/rfp_True_False.png}
+    \caption{High Eviction Zip Codes}
+    \label{SUBFIGURE LABEL 4}
+\end{subfigure}
+\caption{ \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/cluster_diff_n_diff.py}{Reproduced Here}: Confidence Bands formed sampling across random parameter initializations}
+\label{fig:rfp_results}
+\end{figure}
 While the magnitude of the effect shrinks, the sign of the effect is relatively constant and negative when restricting the sample to high eviction zip codes. We also note that the difference in the estimated effects when considering the all zip codes and only high eviction zip codes decrease. \par 
 Over a long time frame, it would be interesting to assess whether the tail of the distribution increased. As \cite{evans2019reducing} notes in summaring previous homelessness related work, the costs are often associated with those in the tail.\footnote{\cite{evans2019reducing} notes that In Spellman et al. (2010), the costliest 10 percent of people incur up to 83 percent of the total costs of shelter
 during homelessness. In Flaming et al. (2015), individuals with costs in the top 5 percent of the public costs
@@ -570,6 +588,19 @@ And indeed, while extremely preliminary, we see some indication that there may b
 \bibliography{bibliography.bib}
 
 \section{Appendix}
+
+\subsection{Regularized ODE}
+\begin{align*}
+    \textrm{prox}_{\lambda, f}(v) := \underset{x}{\textrm{argmin}} \ \Big( f(x) + \frac{1}{2\lambda} \| x - v \|^2\Big)
+\end{align*}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/framework/reg_ode_0.0.png}
+\includegraphics[width=0.8\textwidth]{figures/framework/reg_ode_10.0.png}
+        \caption{High Level Summary}
+        \label{fig:hls}
+\end{figure}
+
 \subsection{Inductive Bias}
 \label{subsec:ib}
 
