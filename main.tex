@@ -101,22 +101,17 @@ Deep Learning models, which we base our framework on, are a subset of machine le
 While often touted for their ability to drastically improve their performance with the size of the data, we leverage them because they allow us to encode meaningful priors in a controllable fashion. This quasi-Bayesian viewpoint of learning/estimation in the finite sample is in line with modern deep learning works (\cite{jacot2018neural},  \cite{nagarajan2019uniform}, \cite{wilson2020case}, \cite{belkin2021fit}, \cite{zhang2021understanding}) which emphasize the importance of ``understanding the nature of the inductive bias''\footnote{\cite{belkin2021fit} ``the properties that make some solutions preferable to others despite all of them fitting the training data equally''} of the estimator and differentiates this work from recent theoretical econometric work that seeks to reduce the influence of regularization in the estimation process (\cite{chernozhukov2018double}). We provide further clarification and justification for our approach in section \ref{subsec:ib}.\par 
 Our high level aim is an empirical estimation framework that can seamlessly account for clustered data in a flexible way, has a clear inductive bias, can be easily extended, and is conceptually simple. \textbf{TIES}: \textbf{T}argeted (handle cluster data), \textbf{I}nterpretable (clear inductive bias), \textbf{E}xtendable and \textbf{S}imple. While the details of the framework are further explained in section \ref{sec:framework}, the key ideas are captured by the equations below. As indicated in the first line, the framework generalizes ordinary least squares (fitting a linear model to the data). Furthermore, as represented by the clusterMap, the model allows for nonparameteric cluster effects by allowing the parameters of the neural network to vary across clusters during the forward pass.\footnote{The clusterMap is the cluster specific map that takes the parameters of the neural network that define the conditional expectation function and adopts them to better fit the individual cluster.} That is by equating clusters of the data to tasks in a meta-learning context, we partial out the cluster effects by allowing the parameters to adopt in the forward pass to the clusters, thereby ``locally'' correcting for the presence of clustered data in a global way. And finally, as indicated by the fish operator `$>=>$', the model remains inherently compositional, even under regularization. This is important for at least three reasons. First, it keeps the model conceptually simple. When we train the model we use one form of composition, when we predict with the model we use the standard form.\footnote{Indeed this language is helpful not only for understanding the model, but how it can be seemlessly evaluated and trained with little effort as highlighted in \cite{frostig2018compiling}}  Second, it enables us to understand the adjustment for the presence of clustered data as a gradient correction that favors early stopping at the cluster level. And third, via this gradient correction, and the work of \cite{domingos2020every}, we can understand our approach within the kernel method framework which in contrast to deep learning is well developed and well understood.
 
-% \begin{figure}[htbp]
-% \centering
-%     \centering
-%     \includegraphics[width=.60\linewidth]{figures/framework/Bazzi_overparam_50000.pdf}
-%     %\caption{All zip codes}
-%     \label{SUBFIGURE LABEL 3}
-% \end{figure}
-
-
 
 \input{eqns/rfp}
-While our framework is introduced and well-motivated in a cross-sectional setting with clustered treatment assignment, we apply it in this paper in a repeated cross-section setting. The advantage of our approach in this context, in contrast to a more traditional non-parametric difference-in-difference estimator, is that we explicitly correct for the presence of clustered data in a nonparametric way using pre and post-treatment information. If we let $Z_i, X_i, A$ denote zip code, covariates, and the set of treated clusters respectively, then in a cross sectional setting, our approach allows us to estimate the following conditional expectation functions. 
+Our framework is well motivated in both the cross-section as well as repeated cross-sectional settings. The fundamental challenge, as we highlight below, is that when treatment is assigned at a cluster level, the statistical learning challenge is how to generalize across the unobserved clusters. In the cross sectional setting this means that the estimator that we fit to the treated group must generalize to the control group and vice versus, and in the repeated cross sectional settings the conditional trends that we estimate in the control group must apply to the treated group.\footnote{Note here, we assume the in the cross sectional setting, the researcher is estimating the Average Treatment Effect on the Treated. Note also, there could be some disagreement over what the estimand is in the repeated cross-section case. Here we are implicitly assuming that the the conditional trends are as good as randomly assinged across clusters.} 
 \begin{align*}
-    E[Y_i |X_i, C_i \in A], \qaud    E[Y_i |X_i, C_i \in A^c]
+\intertext{Cross-Section}
+    &\mathbb{E}[Y |X] \tag{Estimand} \\ 
+&\mathbb{E}[Y|X, C \in A], \quad A \subset \{\textrm{All zip codes}\} \tag{Observe}
+\intertext{Repeated Cross-Section}
+    &\mathbb{E}[Y_1 - Y_0 |X] \tag{Estimand} \\ 
+&\mathbb{E}[Y_1 - Y_0 |X, C \in A], \quad A \equiv \{\textrm{untreated zip codes}\} \tag{Observe}
 \end{align*}
-Given this function, it is straightforward to write down sufficient conditions for identification in a repeated cross-sectional setting following \cite{angrist2009mostly} without introducing any functional form assumptions. \par 
 
 The remainer of the paper is organized as follows. Section 2 describes the essential institutional background of the Right to Counsel and Rapid Rehousing. Section 3 introduces the empirical framework. Section 4 sketches out a toy model, clarifying the estimand of interest in this context. Section 5 contains results and further details of the empirical framework as it relates to the repeated cross-sectional setting. Section 6 concludes.   
 
@@ -429,7 +424,7 @@ As we are only interested in the later effects, we integrate over the individual
 The following notation defines the key variables used in the estimators defined below. 
 \begin{align*}
     &Y_i:  \textrm{Search Duration}\\
-    &X_i: \textrm{Age, Gender, Race, Family Size}\\ 
+    &X_i: \textrm{Age, Gender, Race, Family Size, Month}\\ 
     %&P_i: \textrm{Rapid Rehousing Provider}\\ 
     &Z_i: \textrm{Zip Code} \\
     &D_i: \textrm{Treated Zip Code}
@@ -490,6 +485,46 @@ Importantly, when we restrict the sample to only high eviction zip codes in figu
 Adding individual level controls as well as zip code fixed effects makes a material difference for the magnitude of the effect but not the sign when we again restrict the sample to high eviction zip codes in figure \ref{fig:diff_control_high}.
 
 %Shomik: My dumb ass says that this is impacting the signs since the estimates are more consistently negative. We need to say why this is happening and what that means.
+
+\begin{align*}
+    Y_i &= \alpha _0 + \beta_0 \textrm{Post}_i \times \textrm{Treated}_i + \beta_1  \textrm{Post}_i + \beta_2 \textrm{Treated}_i \\ 
+    &\quad + \beta _3X_i + \beta_4 Z_i + \varepsilon_i
+\end{align*}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_False_False_True.pdf}
+    \caption{Pre-Treatment Test}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_False_False_False.pdf}
+    \caption{Estimated Effect}
+\label{fig:diff_control_high}
+\end{subfigure}
+\caption{All Zip Codes -- \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\label{fig:diff_control}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_True_False_True.pdf}
+    \caption{Pre-Treatment Test}
+    \label{SUBFIGURE LABEL 3}
+\end{subfigure}
+\begin{subfigure}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\linewidth]{figures/rtc/results/cceh/linear_reg_True_False_False.pdf}
+    \caption{Estimated Effect}
+\label{fig:diff_control_high}
+\end{subfigure}
+\caption{High Eviction Zip Codes -- \href{https://github.com/pharringtonp19/evictions/blob/main/scripts/cceh/primary/diff_n_mean_rrh.py}{Reproduced Here}: Confidence Bands formed via stratified bootstrapped sampling without replacement (75\%)}
+\label{fig:diff_control}
+\end{figure}
 
 \begin{align*}
     Y_i &= \alpha _0 + \beta_0 \textrm{Post}_i \times \textrm{Treated}_i + \beta_1  \textrm{Post}_i + \beta_2 \textrm{Treated}_i \\ 
