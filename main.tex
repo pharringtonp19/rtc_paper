@@ -159,6 +159,10 @@ The remainder of the paper is organized as follows. Section 2 introduces the emp
 
 
 \subsection{Evictions}
+\begin{itemize}
+    \item 60 window to make use of eviction prevention funds: \href{https://youtu.be/0cHGknnNRBw?t=742}{Reference}
+    \item \href{https://youtu.be/0cHGknnNRBw?t=1180}{\textbf{Active Eviction}}: Have you been issued a Summons & Complaint (New?) 
+\end{itemize}
 \item Initially, UniteCT got about $\$400$ million from the Consolidated Appropriations Act of 2021 and the American Rescue Plan Act \href{https://ctmirror.org/2022/11/14/ct-rental-assistance-unitect-evictions/}{Reference}
 \item Eviction Process: \href{https://cteviction.guide/contents}{Reference}
 \item Rosenthal said the program is helping tenants buy more time in some cases. But if a landlord wants someone to leave, they will need to do so eventually.“In terms of staying, that’s a very hard proposition … anecdotally we’re seeing a lot of landlords who want to move people out, slap on a coat of paint and raise the rent by $\$500$,” she said. \href{https://www.ctpublic.org/news/2022-12-01/ct-effort-to-help-tenants-avoid-eviction-is-succeeding-but-statewide-roll-out-is-uncertain}{Reference}
@@ -562,6 +566,16 @@ mean costs reported above.''}
 \intertext{Extending the regression model in a nonparametric way is straightforward: simply integrate the transformed outcome across the features/covariates within each treatment group and take the difference. Presented in this way, it's clear that this approach only corrects for the presence of clustered data by using pre-treatment information and leaves to the post-treatment information on the table. Our framework can leverage both sources of information. While we leave a technical description of the framework to section \ref{sec:framework} of the paper}
 \beta_0 &:= \int \mathbb{E}[ \tilde{Y}_i | X_i, D_i=1] - \mathbb{E}[ \tilde{Y}_i | X_i, D_i=0] d\mathbb{P}_X \\ 
 \end{align*}
+
+\subsection{Robustness Checks}
+
+\begin{figure}
+    \centering
+    \includegraphics{}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
  
 \section{Conclusion}
 \begin{itemize}
@@ -585,9 +599,15 @@ And indeed, while extremely preliminary, we see some indication that there may b
     \begin{itemize}
         \item Must be literally homeless 
         \item Must have a qualifying disabling condition 
-        \iitem Must meet homeless History requirement 
+        \item Must meet homeless History requirement 
     \end{itemize}
 \end{itemize}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\linewidth]{figures/rtc/context/can.png}
+%\caption{}
+%\label{FIGURE LABEL}
+\end{figure}
 
 \subsection{Inductive Bias}
 \label{subsec:ib}
